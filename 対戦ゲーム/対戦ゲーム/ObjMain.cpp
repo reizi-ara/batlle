@@ -196,6 +196,8 @@ void CObjMain::Action()
 	{
 		this->SetStatus(false);
 		Hits::DeleteHitBox(this);
+
+		Scene::SetScene(new SceneMain());
 	}
 
 	hit->SetPos(m_px, m_py);
