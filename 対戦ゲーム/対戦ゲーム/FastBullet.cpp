@@ -81,5 +81,5 @@ void CObjFastBullet::Draw()
 	dst.m_right = 8.0f + m_px;
 	dst.m_bottom = 8.0f + m_py;
 
-	Draw::Draw(1, &src, &dst, c, 0.0f);
+	Draw::Draw(2, &src, &dst, c, 0.0f);
 }

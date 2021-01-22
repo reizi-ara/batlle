@@ -37,4 +37,6 @@ private:
 	int hp;
 
 	bool gurd_flag;
+
+	int breaktime;
 };

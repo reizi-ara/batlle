@@ -22,6 +22,12 @@
     <Filter Include="ソース ファイル\Battle">
       <UniqueIdentifier>{457e4e79-dad7-4641-b837-a6336bb9fbc8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Battle\Bullet">
+      <UniqueIdentifier>{183fd143-b7c9-4aaf-89d9-0fbef5c82f2a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Battle\Attack">
+      <UniqueIdentifier>{e18eea29-1bce-4895-86de-b8f8cc33312d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameL\Audio.cpp">
@@ -69,14 +75,20 @@
     <ClCompile Include="ObjMain.cpp">
       <Filter>ソース ファイル\Main</Filter>
     </ClCompile>
-    <ClCompile Include="NormalBullet.cpp">
-      <Filter>ソース ファイル\Battle</Filter>
-    </ClCompile>
     <ClCompile Include="ObjBalance.cpp">
       <Filter>ソース ファイル\Main</Filter>
     </ClCompile>
     <ClCompile Include="FastBullet.cpp">
-      <Filter>ソース ファイル\Battle</Filter>
+      <Filter>ソース ファイル\Battle\Bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="NormalBullet.cpp">
+      <Filter>ソース ファイル\Battle\Bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="Attack.cpp">
+      <Filter>ソース ファイル\Battle\Attack</Filter>
+    </ClCompile>
+    <ClCompile Include="ObjSceneMain.cpp">
+      <Filter>ソース ファイル\Scene</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -125,14 +137,20 @@
     <ClInclude Include="ObjMain.h">
       <Filter>ソース ファイル\Main</Filter>
     </ClInclude>
-    <ClInclude Include="NormalBullet.h">
-      <Filter>ソース ファイル\Battle</Filter>
-    </ClInclude>
     <ClInclude Include="ObjBalance.h">
       <Filter>ソース ファイル\Main</Filter>
     </ClInclude>
     <ClInclude Include="FastBullet.h">
-      <Filter>ソース ファイル\Battle</Filter>
+      <Filter>ソース ファイル\Battle\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="NormalBullet.h">
+      <Filter>ソース ファイル\Battle\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Attack.h">
+      <Filter>ソース ファイル\Battle\Attack</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjSceneMain.h">
+      <Filter>ソース ファイル\Scene</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

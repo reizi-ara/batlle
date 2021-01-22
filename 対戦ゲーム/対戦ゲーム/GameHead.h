@@ -10,6 +10,7 @@ enum OBJ_NAME
 	OBJ_BALANCE,
 	OBJ_NORMAL_BULLET,
 	OBJ_FAST_BULLET,
+	OBJ_SCENE_MAIN,
 };
 //------------------------------------------------
 
@@ -59,6 +60,8 @@ struct UserData
 #include"NormalBullet.h"
 #include"ObjBalance.h"
 #include"FastBullet.h"
+#include"Attack.h"
+#include"ObjSceneMain.h"
 //------------------------------------------------
 
 //ゲームシーンクラスヘッダ------------------------

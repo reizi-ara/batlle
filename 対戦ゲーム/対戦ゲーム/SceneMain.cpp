@@ -30,11 +30,17 @@ SceneMain::~SceneMain()
 void SceneMain::InitScene()
 {
 	Draw::LoadImage(L"白.png", 1, TEX_SIZE_512);
+	Draw::LoadImage(L"白ボックス.png", 2, TEX_SIZE_512);
+	Draw::LoadImage(L"ステージ.png", 3, TEX_SIZE_512);
+	Draw::LoadImage(L"HPゲージ.png", 4, TEX_SIZE_512);
+	Draw::LoadImage(L"ブーストゲージ.png", 5, TEX_SIZE_512);
 
-	CObjMain* m = new CObjMain(0.0f, 1.0f);
+	CObjMain* m = new CObjMain(30.0f, 1.0f);
 	Objs::InsertObj(m, OBJ_MAIN, 1);
-	CObjBalance* b = new CObjBalance(768.0f, 1.0f);
+	CObjBalance* b = new CObjBalance(738.0f, 1.0f);
 	Objs::InsertObj(b, OBJ_BALANCE, 1);
+	CObjSceneMain* sm = new CObjSceneMain();
+	Objs::InsertObj(sm, OBJ_SCENE_MAIN, 1);
 }
 
 //ゲームタイトル実行メソッド
