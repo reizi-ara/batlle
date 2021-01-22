@@ -28,7 +28,7 @@ void CObjBalance::Init()
 	m_vy = 0.0f;
 	m_jump_num = 0;
 
-	turn_flag = false;
+	turn_flag = true;
 	
 	hp = 10;
 	gurd_flag = false;
