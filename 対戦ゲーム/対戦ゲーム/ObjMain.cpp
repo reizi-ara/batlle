@@ -136,7 +136,7 @@ void CObjMain::Action()
 	{
 		m_hit_down = true;
 		m_py = 536.0f - 32.0f;
-		if (gurd_flag == false && breaktime == 50)
+		if (gurd_flag == false && breaktime == 20)
 		{
 
 			m_jump_num = 0;
@@ -179,12 +179,16 @@ void CObjMain::Action()
 			gurd_flag = true;
 			m_jump_num += 1;
 		}
+		if (hit->CheckObjNameHit(OBJ_NORMAL_BULLET) != nullptr&&gurd_flag == false)
+		{
+			hp -= 1;
+		}
 	}
 	//ブースト残量がないためガードをできない
 	if (m_jump_num == 50)
 	{
 		gurd_flag = false;
-		if (breaktime < 50 && m_hit_down == true)
+		if (breaktime < 20 && m_hit_down == true)
 			breaktime++;
 	}
 	//HPが0になった時
