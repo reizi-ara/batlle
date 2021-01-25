@@ -31,6 +31,7 @@ void CObjBalance::Init()
 	turn_flag = true;
 	
 	hp = 10;
+
 	gurd_flag = false;
 
 	breaktime = 0;
