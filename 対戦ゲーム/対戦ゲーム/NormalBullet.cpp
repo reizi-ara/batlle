@@ -11,13 +11,15 @@
 //使用するネームスペース
 using namespace GameL;
 
-CObjNormalBullet::CObjNormalBullet(float x, float y,bool f,float c)
+CObjNormalBullet::CObjNormalBullet(float x, float y,bool f,float c,int dam)
 {
 	m_px = x;
 	m_py = y;
 	turn_flag = f;
 
 	color = c;
+
+	damage = dam;
 }
 
 //イニシャライズ
@@ -33,6 +35,7 @@ void CObjNormalBullet::Init()
 void CObjNormalBullet::Action()
 {
 	CHitBox* hit = Hits::GetHitBox(this);
+	CObjMain* m = (CObjMain*)Objs::GetObj(OBJ_MAIN);
 
 	if (turn_flag == true)
 	{
@@ -50,12 +53,14 @@ void CObjNormalBullet::Action()
 	{
 		this->SetStatus(false);
 		Hits::DeleteHitBox(this);
+
+		m->GetDamege(damage);
 	}
 
 	if (m_px + 8.0f >= 800)
 	{
 		this->SetStatus(false);
-		Hits::DeleteHitBox(this);
+		Hits::DeleteHitBox(this);	
 	}
 	if (m_px <= 0)
 	{

@@ -13,6 +13,12 @@ public:
 	void Init();   //イニシャライズ
 	void Action(); //アクション
 	void Draw();   //ドロー
+
+	void GetDamege(int dam) 
+	{
+		if (gurd_flag == false)
+			hp -= dam;
+	}
 private:
 
 	float m_px;
@@ -33,9 +39,19 @@ private:
 	bool turn_flag;//trueが左、falseが右
 
 	bool bullet_flag;
+
+	bool sub_bullet_flag;
+
 	int hp;
 
 	bool gurd_flag;
 
 	int breaktime;
+
+	int sub_R;
+
+	int sub_R_time;
+
+	int main_R;
+	int main_R_time;
 };

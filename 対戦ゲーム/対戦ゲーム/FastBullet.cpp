@@ -11,13 +11,15 @@
 //使用するネームスペース
 using namespace GameL;
 
-CObjFastBullet::CObjFastBullet(float x, float y, bool f, float c)
+CObjFastBullet::CObjFastBullet(float x, float y, bool f, float c,int dam)
 {
 	m_px = x;
 	m_py = y;
 	turn_flag = f;
 
 	color = c;
+
+	damage = dam;
 }
 
 //イニシャライズ
@@ -33,6 +35,7 @@ void CObjFastBullet::Init()
 void CObjFastBullet::Action()
 {
 	CHitBox* hit = Hits::GetHitBox(this);
+	CObjBalance* b = (CObjBalance*)Objs::GetObj(OBJ_BALANCE);
 
 	if (turn_flag == true)
 	{
@@ -50,6 +53,8 @@ void CObjFastBullet::Action()
 	{
 		this->SetStatus(false);
 		Hits::DeleteHitBox(this);
+
+		b->GetDamege(damage);
 	}
 	if (m_px + 8.0f >= 800)
 	{

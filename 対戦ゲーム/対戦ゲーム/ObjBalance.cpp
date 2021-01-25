@@ -30,11 +30,19 @@ void CObjBalance::Init()
 
 	turn_flag = true;
 	
-	hp = 10;
+	hp = 50;
 
 	gurd_flag = false;
 
 	breaktime = 0;
+
+	boost_flag = false;
+
+	main_R = 10;
+	main_R_time = 0;
+
+	sub_R = 3;
+	sub_R_time = 0;
 
 	Hits::SetHitBox(this, m_px, m_py, 32.0f, 32.0f, ELEMENT_PLAYER2, OBJ_BALANCE, 1);
 }
@@ -50,15 +58,24 @@ void CObjBalance::Action()
 		//弾丸発射処理
 		if (Input::GetConButtons(con_num, GAMEPAD_X) == true)
 		{
-			if (bullet_flag == true && breaktime == 0)
+			if (bullet_flag == true && breaktime == 0 && main_R > 0)
 			{
-				CObjNormalBullet* nb = new CObjNormalBullet(m_px + 16.0f, m_py + 16.0f, turn_flag, 0.0f);
+				CObjNormalBullet* nb = new CObjNormalBullet(m_px + 16.0f, m_py + 16.0f, turn_flag, 0.0f, 1);
 				Objs::InsertObj(nb, OBJ_NORMAL_BULLET, 1);
 				bullet_flag = false;
+				main_R--;
 			}
 		}
 		else
 			bullet_flag = true;
+
+		if (Input::GetConButtons(con_num, GAMEPAD_RIGHT_SHOULDER) == true && boost_flag == false && breaktime == 0 && sub_R > 0)
+		{
+			m_vy = -9.0f;
+			boost_flag = true;
+			sub_R--;
+		}
+		
 
 		if (breaktime == 0)
 		{
@@ -67,27 +84,46 @@ void CObjBalance::Action()
 		}
 		if (breaktime == 0) 
 		{
-			//移動速度制御
-			if (m_vx > 3.0f)
+			if (boost_flag == false)
 			{
-				m_vx = 3.0f;
+				//移動速度制御
+				if (m_vx > 3.0f)
+				{
+					m_vx = 3.0f;
+				}
+				if (m_vx < -3.0f)
+				{
+					m_vx = -3.0f;
+				}
 			}
-			if (m_vx < -3.0f)
+			else if (boost_flag == true)
 			{
-				m_vx = -3.0f;
+				//移動速度制御
+				if (m_vx > 6.0f)
+				{
+					m_vx = 6.0f;
+				}
+				if (m_vx < -6.0f)
+				{
+					m_vx = -6.0f;
+				}
 			}
+			
 		}
 
 		//ジャンプ処理
 		if (Input::GetConButtons(con_num, GAMEPAD_A) == true && breaktime == 0)
 		{
-			if (m_hit_down == true)
-				m_vy = -12.0f;
+			/*if (m_hit_down == true)
+				m_vy = -12.0f;*/
 			m_hit_down = false;
-			if (m_hit_down == false && m_jump_num < 50)
+			if (m_hit_down == false && m_jump_num < 500)
 			{
-				m_vy = -9.0f;
-				m_jump_num += 1;
+				if (boost_flag == false)
+					m_vy = -9.0f;
+				else if (boost_flag == true)
+					m_vy = -12.0f;
+				m_jump_num += 10;
 			}
 			button_flag = false;
 		}
@@ -105,6 +141,12 @@ void CObjBalance::Action()
 				m_vy += 6.8 / (16.0f);
 
 		}
+
+		if (boost_flag == true)
+		{
+			if (m_jump_num < 500)
+				m_jump_num += 2;
+		}
 	
 	}
 	//防御中は移動を制限する
@@ -113,7 +155,7 @@ void CObjBalance::Action()
 		m_vx = 0.0f;
 		m_vy = 0.0f;
 	}
-	if (m_jump_num == 50)
+	if (m_jump_num >= 500)
 	{
 		m_vx = 0.0f;
 	}
@@ -136,20 +178,21 @@ void CObjBalance::Action()
 	{
 		m_hit_down = true;
 		m_py = 536.0f - 32.0f;
+		boost_flag = false;
 		if (gurd_flag == false && breaktime == 20)
 		{
 			
 			m_jump_num = 0;
 			breaktime = 0;
 		}
-		else if (m_jump_num < 50 && gurd_flag == false)
+		else if (m_jump_num < 500 && gurd_flag == false)
 		{
 			m_jump_num = 0;
 		}
 	}
-	if (m_py < 0.0f)
+	if (m_py < 64.0f)
 	{
-		m_py = 0;
+		m_py = 64.0f;
 	}
 	if (m_px < 30.0f)
 	{
@@ -163,37 +206,42 @@ void CObjBalance::Action()
 
 
 	//ガードをしていないとき
-	if (Input::GetConButtons(con_num, GAMEPAD_RIGHT_SHOULDER) == false)
+	/*if (Input::GetConButtons(con_num, GAMEPAD_LEFT_SHOULDER) == false)
 	{
 		gurd_flag = false;
-		if (hit->CheckObjNameHit(OBJ_FAST_BULLET) != nullptr)
+		if (hit->CheckObjNameHit(OBJ_FAST_BULLET) != nullptr&&boost_flag == false)
 		{
 			hp -= 1;
 		}
+	}*/
+
+	if (Input::GetConButtons(con_num, GAMEPAD_LEFT_SHOULDER) == false)
+	{
+		gurd_flag = false;
 	}
 	//ガードをしているとき
-	if (Input::GetConButtons(con_num, GAMEPAD_RIGHT_SHOULDER) == true)
+	if (Input::GetConButtons(con_num, GAMEPAD_LEFT_SHOULDER) == true)
 	{
-		if (m_jump_num < 50)
+		if (m_jump_num < 500)
 		{
 			gurd_flag = true;
-			m_jump_num += 1;
+			m_jump_num += 10;
 		}
-		if (hit->CheckObjNameHit(OBJ_FAST_BULLET) != nullptr&&gurd_flag == false)
+		/*if (hit->CheckObjNameHit(OBJ_FAST_BULLET) != nullptr&&gurd_flag == false)
 		{
 			hp -= 1;
-		}
+		}*/
 		
 	}
 	//ブースト残量がないためガードをできない
-	if (m_jump_num == 50)
+	if (m_jump_num >= 500)
 	{
 		gurd_flag = false;
 		if (breaktime < 20 && m_hit_down == true)
 			breaktime++;
 	}
 	//HPが0になった時
-	if (hp == 0)
+	if (hp <= 0)
 	{
 		this->SetStatus(false);
 		Hits::DeleteHitBox(this);
@@ -202,6 +250,25 @@ void CObjBalance::Action()
 	}
 
 	hit->SetPos(m_px, m_py);
+
+	if (sub_R == 0)
+	{
+		sub_R_time++;
+	}
+	if (sub_R_time == 600)
+	{
+		sub_R = 3;
+		sub_R_time = 0;
+	}
+	if (main_R == 0)
+	{
+		main_R_time++;
+	}
+	if (main_R_time == 120)
+	{
+		main_R = 10;
+		main_R_time = 0;
+	}
 }
 
 //ドロー
@@ -216,6 +283,12 @@ void CObjBalance::Draw()
 	RECT_F dst2;
 	RECT_F src3;
 	RECT_F dst3;
+	RECT_F src4;
+	RECT_F dst4;
+	RECT_F src5;
+	RECT_F dst5;
+	RECT_F src6;
+	RECT_F dst6;
 
 
 	src.m_top = 0.0f;
@@ -242,6 +315,8 @@ void CObjBalance::Draw()
 	Draw::Draw(1, &src, &dst, c, 0.0f);
 
 	wchar_t str[256];
+	wchar_t str2[256];
+	wchar_t str3[256];
 	
 
 	Font::StrDraw(L"2P", 750, 560, 20, c);
@@ -257,7 +332,7 @@ void CObjBalance::Draw()
 
 	dst2.m_top = 560.0f;
 	dst2.m_left = 630.0f;
-	dst2.m_right = dst2.m_left - (m_jump_num * 2);
+	dst2.m_right = dst2.m_left - (m_jump_num / 5);
 	dst2.m_bottom = dst2.m_top + 20.0f;
 
 	Draw::Draw(2, &src2, &dst2, c, 0.0f);
@@ -271,7 +346,7 @@ void CObjBalance::Draw()
 
 	dst3.m_top = 560.0f;
 	dst3.m_left = 730.0f;
-	dst3.m_right = dst3.m_left - (hp * 5);
+	dst3.m_right = dst3.m_left - hp;
 	dst3.m_bottom = dst3.m_top + 20.0f;
 
 
@@ -280,7 +355,40 @@ void CObjBalance::Draw()
 	swprintf_s(str, L"%d", hp);
 	Font::StrDraw(str, 710, 560, 20, bk_c);
 
-	if (m_jump_num == 50)
+	//ゲージ
+	src4.m_top = 0.0f;
+	src4.m_left = 0.0f;
+	src4.m_right = 64.0f;
+	src4.m_bottom = 64.0f;
+
+
+	dst4.m_top = 10.0f;
+	dst4.m_left = 610.0f;
+	dst4.m_right = dst4.m_left - sub_R * (50 / 3);
+	dst4.m_bottom = dst4.m_top + 20.0f;
+
+	Draw::Draw(2, &src4, &dst4, c, 0.0f);
+
+	//ゲージ
+	src5.m_top = 0.0f;
+	src5.m_left = 0.0f;
+	src5.m_right = 64.0f;
+	src5.m_bottom = 64.0f;
+
+
+	dst5.m_top = 10.0f;
+	dst5.m_left = 610.0f;
+	dst5.m_right = dst5.m_left - sub_R_time / 12;
+	dst5.m_bottom = dst5.m_top + 20.0f;
+
+	Draw::Draw(2, &src5, &dst5, bk_c, 0.0f);
+
+	swprintf_s(str2, L"%d：サブ", sub_R);
+	Font::StrDraw(str2, 600, 10, 20, bk_c);
+	swprintf_s(str3, L"%d：メイン", main_R);
+	Font::StrDraw(str3, 600, 40, 20, bk_c);
+
+	if (m_jump_num >= 500)
 	{
 		if (breaktime % 5 == 0)
 			Font::StrDraw(L"OVERHEAT", 550, 560, 20, bk_c);
