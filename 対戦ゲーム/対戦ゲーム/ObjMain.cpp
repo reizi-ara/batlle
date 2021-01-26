@@ -214,11 +214,11 @@ void CObjMain::Action()
 	//ƒK[ƒh‚ğ‚µ‚Ä‚¢‚é‚Æ‚«
 	if (Input::GetConButtons(con_num, GAMEPAD_LEFT_SHOULDER) == true)
 	{
-		if (m_jump_num < 50)
+		/*if (m_jump_num < 50)
 		{
 			gurd_flag = true;
 			m_jump_num += 1;
-		}
+		}*/
 		/*if (hit->CheckObjNameHit(OBJ_NORMAL_BULLET) != nullptr&&gurd_flag == false)
 		{
 			hp -= 1;

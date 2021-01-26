@@ -60,14 +60,14 @@ void CObjBalance::Action()
 		{
 			if (bullet_flag == true && breaktime == 0 && main_R > 0&&boost_flag == false)
 			{
-				CObjNormalBullet* nb = new CObjNormalBullet(m_px + 16.0f, m_py + 16.0f, turn_flag, 0.0f, 1, false);
+				CObjNormalBullet* nb = new CObjNormalBullet(m_px + 16.0f, m_py + 16.0f, turn_flag, 0.0f, 2, false);
 				Objs::InsertObj(nb, OBJ_NORMAL_BULLET, 1);
 				bullet_flag = false;
 				main_R--;
 			}
-			if (bullet_flag == true && breaktime == 0 && main_R > 0 && boost_flag == true)
+			if (bullet_flag == true && breaktime == 0 && boost_flag == true)
 			{
-				CObjNormalBullet* nb = new CObjNormalBullet(m_px + 16.0f, m_py + 16.0f, turn_flag, 0.0f, 2, true);
+				CObjNormalBullet* nb = new CObjNormalBullet(m_px + 16.0f, m_py + 16.0f, turn_flag, 0.0f, 3, true);
 				Objs::InsertObj(nb, OBJ_NORMAL_BULLET, 1);
 				bullet_flag = false;
 			}
@@ -75,7 +75,7 @@ void CObjBalance::Action()
 		else
 			bullet_flag = true;
 
-		if (Input::GetConButtons(con_num, GAMEPAD_RIGHT_SHOULDER) == true && boost_flag == false && breaktime == 0 && sub_R > 0)
+		if (Input::GetConButtons(con_num, GAMEPAD_RIGHT_SHOULDER) == true && boost_flag == false && breaktime == 0 && sub_R > 0&&m_jump_num<500)
 		{
 			m_vy = -9.0f;
 			boost_flag = true;
@@ -250,11 +250,11 @@ void CObjBalance::Action()
 	//ƒK[ƒh‚ð‚µ‚Ä‚¢‚é‚Æ‚«
 	if (Input::GetConButtons(con_num, GAMEPAD_LEFT_SHOULDER) == true)
 	{
-		if (m_jump_num < 500)
+		/*if (m_jump_num < 500)
 		{
 			gurd_flag = true;
 			m_jump_num += 10;
-		}
+		}*/
 		/*if (hit->CheckObjNameHit(OBJ_FAST_BULLET) != nullptr&&gurd_flag == false)
 		{
 			hp -= 1;
