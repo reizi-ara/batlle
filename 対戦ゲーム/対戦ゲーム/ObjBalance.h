@@ -16,7 +16,7 @@ public:
 
 	void GetDamege(int dam)
 	{
-		if (gurd_flag == false && boost_flag == false)
+		if (gurd_flag == false)
 			hp -= dam;
 	}
 private:

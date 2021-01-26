@@ -37,7 +37,7 @@ void CObjMain::Init()
 
 	breaktime = 0;
 
-	sub_R = 5;
+	sub_R = 3;
 	sub_R_time = 0;
 
 	main_R = 10;
@@ -247,9 +247,9 @@ void CObjMain::Action()
 		sub_R_time++;
 	}
 
-	if (sub_R_time == 300)
+	if (sub_R_time == 400)
 	{
-		sub_R = 5;
+		sub_R = 3;
 		sub_R_time = 0;
 	}
 
@@ -257,7 +257,7 @@ void CObjMain::Action()
 	{
 		main_R_time++;
 	}
-	if (main_R_time == 120)
+	if (main_R_time == 150)
 	{
 		main_R = 10;
 		main_R_time = 0;
@@ -280,6 +280,10 @@ void CObjMain::Draw()
 	RECT_F dst4;
 	RECT_F src5;
 	RECT_F dst5;
+	RECT_F src6;
+	RECT_F dst6;
+	RECT_F src7;
+	RECT_F dst7;
 
 	src.m_top = 0.0f;
 	src.m_left = 0.0f;
@@ -307,11 +311,6 @@ void CObjMain::Draw()
 	Font::StrDraw(L"1P", 20, 560, 20, c);
 	wchar_t str2[256];
 	wchar_t str3[256];
-	/*swprintf_s(str2, L"Bust::%d", m_jump_num);
-	Font::StrDraw(str2,170, 560, 20, c);*/
-
-
-
 	
 	//ゲージ
 	src2.m_top = 0.0f;
@@ -356,7 +355,7 @@ void CObjMain::Draw()
 
 	dst4.m_top = 10.0f;
 	dst4.m_left = 120.0f;
-	dst4.m_right = dst4.m_left + sub_R * 10;
+	dst4.m_right = dst4.m_left + sub_R * (50/3);
 	dst4.m_bottom = dst4.m_top + 20.0f;
 
 	Draw::Draw(2, &src4, &dst4, c, 0.0f);
@@ -370,15 +369,47 @@ void CObjMain::Draw()
 
 	dst5.m_top = 10.0f;
 	dst5.m_left = 120.0f;
-	dst5.m_right = dst5.m_left + sub_R_time / 6;
+	dst5.m_right = dst5.m_left + sub_R_time / 8;
 	dst5.m_bottom = dst5.m_top + 20.0f;
 
 	Draw::Draw(2, &src5, &dst5, bk_c, 0.0f);
 
 	swprintf_s(str2, L"サブ：%d", sub_R);
 	Font::StrDraw(str2, 60, 10, 20, bk_c);
+
+	//メインゲージ
+	src6.m_top = 0.0f;
+	src6.m_left = 0.0f;
+	src6.m_right = 64.0f;
+	src6.m_bottom = 64.0f;
+
+
+	dst6.m_top = 40.0f;
+	dst6.m_left = 120.0f;
+	dst6.m_right = dst6.m_left + main_R * 5;
+	dst6.m_bottom = dst6.m_top + 20.0f;
+
+	//メインゲージ描画
+	Draw::Draw(2, &src6, &dst6, c, 0.0f);
+
+	//メインリロードゲージ
+	src7.m_top = 0.0f;
+	src7.m_left = 0.0f;
+	src7.m_right = 64.0f;
+	src7.m_bottom = 64.0f;
+
+
+	dst7.m_top = 40.0f;
+	dst7.m_left = 120.0f;
+	dst7.m_right = dst7.m_left + main_R_time / 3;
+	dst7.m_bottom = dst7.m_top + 20.0f;
+
+	//メインリロードゲージ描画
+	Draw::Draw(2, &src7, &dst7, bk_c, 0.0f);
+
+	
 	swprintf_s(str2, L"メイン：%d", main_R);
-	Font::StrDraw(str2, 60, 40, 20, bk_c);
+	Font::StrDraw(str2, 40, 40, 20, bk_c);
 
 	if (m_jump_num == 50)
 	{

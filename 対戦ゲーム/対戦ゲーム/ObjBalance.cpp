@@ -58,12 +58,18 @@ void CObjBalance::Action()
 		//弾丸発射処理
 		if (Input::GetConButtons(con_num, GAMEPAD_X) == true)
 		{
-			if (bullet_flag == true && breaktime == 0 && main_R > 0)
+			if (bullet_flag == true && breaktime == 0 && main_R > 0&&boost_flag == false)
 			{
-				CObjNormalBullet* nb = new CObjNormalBullet(m_px + 16.0f, m_py + 16.0f, turn_flag, 0.0f, 1);
+				CObjNormalBullet* nb = new CObjNormalBullet(m_px + 16.0f, m_py + 16.0f, turn_flag, 0.0f, 1, false);
 				Objs::InsertObj(nb, OBJ_NORMAL_BULLET, 1);
 				bullet_flag = false;
 				main_R--;
+			}
+			if (bullet_flag == true && breaktime == 0 && main_R > 0 && boost_flag == true)
+			{
+				CObjNormalBullet* nb = new CObjNormalBullet(m_px + 16.0f, m_py + 16.0f, turn_flag, 0.0f, 2, true);
+				Objs::InsertObj(nb, OBJ_NORMAL_BULLET, 1);
+				bullet_flag = false;
 			}
 		}
 		else
@@ -81,6 +87,12 @@ void CObjBalance::Action()
 		{
 			//左右移動処理
 			m_vx += Input::GetConVecStickLX(con_num);
+			if (boost_flag == true)
+			{
+				//上下移動処理
+				m_vy -= Input::GetConVecStickLY(con_num);
+			}
+			
 		}
 		if (breaktime == 0) 
 		{
@@ -107,6 +119,15 @@ void CObjBalance::Action()
 				{
 					m_vx = -6.0f;
 				}
+				//移動速度制御
+				if (m_vy > 6.0f)
+				{
+					m_vy = 6.0f;
+				}
+				if (m_vy < -6.0f)
+				{
+					m_vy = -6.0f;
+				}
 			}
 			
 		}
@@ -114,6 +135,7 @@ void CObjBalance::Action()
 		//ジャンプ処理
 		if (Input::GetConButtons(con_num, GAMEPAD_A) == true && breaktime == 0)
 		{
+			boost_flag = false;
 			/*if (m_hit_down == true)
 				m_vy = -12.0f;*/
 			m_hit_down = false;
@@ -121,8 +143,7 @@ void CObjBalance::Action()
 			{
 				if (boost_flag == false)
 					m_vy = -9.0f;
-				else if (boost_flag == true)
-					m_vy = -12.0f;
+
 				m_jump_num += 10;
 			}
 			button_flag = false;
@@ -135,9 +156,15 @@ void CObjBalance::Action()
 		{
 			m_vx *= 0.78;
 		}
+		//摩擦
+		if (Input::GetConVecStickLY(con_num) == 0.0f && breaktime == 0 && boost_flag == true)
+		{
+			m_vy *= 0.78;
+		}
+		//落下処理
 		if (m_py + 32.0f < 536.0f)
 		{
-			if (gurd_flag == false)
+			if (gurd_flag == false && boost_flag == false)
 				m_vy += 6.8 / (16.0f);
 
 		}
@@ -158,6 +185,7 @@ void CObjBalance::Action()
 	if (m_jump_num >= 500)
 	{
 		m_vx = 0.0f;
+		boost_flag = false;
 	}
 	
 	
@@ -255,7 +283,7 @@ void CObjBalance::Action()
 	{
 		sub_R_time++;
 	}
-	if (sub_R_time == 600)
+	if (sub_R_time == 400)
 	{
 		sub_R = 3;
 		sub_R_time = 0;
@@ -264,7 +292,7 @@ void CObjBalance::Action()
 	{
 		main_R_time++;
 	}
-	if (main_R_time == 120)
+	if (main_R_time == 100)
 	{
 		main_R = 10;
 		main_R_time = 0;
@@ -275,6 +303,7 @@ void CObjBalance::Action()
 void CObjBalance::Draw()
 {
 	float c[4] = { 1.0f,0.0f,0.0f,1.0f };
+	float b_c[4] = { 1.0f,0.0f,1.0f,1.0f };
 	float bk_c[4] = { 0.0f,0.0f,0.0f,1.0f };
 
 	RECT_F src;
@@ -289,6 +318,12 @@ void CObjBalance::Draw()
 	RECT_F dst5;
 	RECT_F src6;
 	RECT_F dst6;
+	RECT_F src7;
+	RECT_F dst7;
+
+	wchar_t str[256];
+	wchar_t str2[256];
+	wchar_t str3[256];
 
 
 	src.m_top = 0.0f;
@@ -296,6 +331,8 @@ void CObjBalance::Draw()
 	src.m_right = 64.0f;
 	src.m_bottom = 64.0f;
 
+	
+	//バランスタイプの向き変更
 	if (turn_flag == false)
 	{
 		dst.m_top = m_py;
@@ -310,20 +347,25 @@ void CObjBalance::Draw()
 		dst.m_right = m_px;
 		dst.m_bottom = 32.0f + m_py;
 	}
+
+	if (boost_flag == false)
+	{
+		//バランスタイプ描画
+		Draw::Draw(1, &src, &dst, c, 0.0f);
+	}
+
+	if (boost_flag == true)
+	{
+		//バランスタイプ描画
+		Draw::Draw(1, &src, &dst, b_c, 0.0f);
+	}
 	
-
-	Draw::Draw(1, &src, &dst, c, 0.0f);
-
-	wchar_t str[256];
-	wchar_t str2[256];
-	wchar_t str3[256];
 	
-
+	//2P表記
 	Font::StrDraw(L"2P", 750, 560, 20, c);
 
 	
-
-	//ゲージ
+	//Boostゲージ
 	src2.m_top = 0.0f;
 	src2.m_left = 0.0f;
 	src2.m_right = 64.0f;
@@ -334,10 +376,11 @@ void CObjBalance::Draw()
 	dst2.m_left = 630.0f;
 	dst2.m_right = dst2.m_left - (m_jump_num / 5);
 	dst2.m_bottom = dst2.m_top + 20.0f;
-
+	
+	//Boostゲージ描画
 	Draw::Draw(2, &src2, &dst2, c, 0.0f);
 
-	//ゲージ
+	//HPゲージ
 	src3.m_top = 0.0f;
 	src3.m_left = 0.0f;
 	src3.m_right = 64.0f;
@@ -349,13 +392,14 @@ void CObjBalance::Draw()
 	dst3.m_right = dst3.m_left - hp;
 	dst3.m_bottom = dst3.m_top + 20.0f;
 
-
+	//HPゲージ描画
 	Draw::Draw(2, &src3, &dst3, c, 0.0f);
 
+	//HP表示
 	swprintf_s(str, L"%d", hp);
 	Font::StrDraw(str, 710, 560, 20, bk_c);
 
-	//ゲージ
+	//サブゲージ
 	src4.m_top = 0.0f;
 	src4.m_left = 0.0f;
 	src4.m_right = 64.0f;
@@ -367,9 +411,10 @@ void CObjBalance::Draw()
 	dst4.m_right = dst4.m_left - sub_R * (50 / 3);
 	dst4.m_bottom = dst4.m_top + 20.0f;
 
+	//サブゲージ描画
 	Draw::Draw(2, &src4, &dst4, c, 0.0f);
 
-	//ゲージ
+	//サブリロードゲージ
 	src5.m_top = 0.0f;
 	src5.m_left = 0.0f;
 	src5.m_right = 64.0f;
@@ -378,15 +423,50 @@ void CObjBalance::Draw()
 
 	dst5.m_top = 10.0f;
 	dst5.m_left = 610.0f;
-	dst5.m_right = dst5.m_left - sub_R_time / 12;
+	dst5.m_right = dst5.m_left - sub_R_time / 8;
 	dst5.m_bottom = dst5.m_top + 20.0f;
 
+	//サブリロードゲージ描画
 	Draw::Draw(2, &src5, &dst5, bk_c, 0.0f);
 
 	swprintf_s(str2, L"%d：サブ", sub_R);
 	Font::StrDraw(str2, 600, 10, 20, bk_c);
+
+	//メインゲージ
+	src6.m_top = 0.0f;
+	src6.m_left = 0.0f;
+	src6.m_right = 64.0f;
+	src6.m_bottom = 64.0f;
+
+
+	dst6.m_top = 40.0f;
+	dst6.m_left = 610.0f;
+	dst6.m_right = dst6.m_left - main_R * 5;
+	dst6.m_bottom = dst6.m_top + 20.0f;
+
+	//メインゲージ描画
+	Draw::Draw(2, &src6, &dst6, c, 0.0f);
+
+	//メインリロードゲージ
+	src7.m_top = 0.0f;
+	src7.m_left = 0.0f;
+	src7.m_right = 64.0f;
+	src7.m_bottom = 64.0f;
+
+
+	dst7.m_top = 40.0f;
+	dst7.m_left = 610.0f;
+	dst7.m_right = dst7.m_left - main_R_time / 2;
+	dst7.m_bottom = dst7.m_top + 20.0f;
+
+	//メインリロードゲージ描画
+	Draw::Draw(2, &src7, &dst7, bk_c, 0.0f);
+
 	swprintf_s(str3, L"%d：メイン", main_R);
-	Font::StrDraw(str3, 600, 40, 20, bk_c);
+	if (main_R < 10)
+		Font::StrDraw(str3, 600, 40, 20, bk_c);
+	else
+		Font::StrDraw(str3, 590, 40, 20, bk_c);
 
 	if (m_jump_num >= 500)
 	{

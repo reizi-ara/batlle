@@ -11,7 +11,7 @@
 //使用するネームスペース
 using namespace GameL;
 
-CObjNormalBullet::CObjNormalBullet(float x, float y,bool f,float c,int dam)
+CObjNormalBullet::CObjNormalBullet(float x, float y,bool f,float c,int dam,bool hf)
 {
 	m_px = x;
 	m_py = y;
@@ -20,6 +20,7 @@ CObjNormalBullet::CObjNormalBullet(float x, float y,bool f,float c,int dam)
 	color = c;
 
 	damage = dam;
+	h_flag = hf;
 }
 
 //イニシャライズ
@@ -37,15 +38,25 @@ void CObjNormalBullet::Action()
 	CHitBox* hit = Hits::GetHitBox(this);
 	CObjMain* m = (CObjMain*)Objs::GetObj(OBJ_MAIN);
 
-	if (turn_flag == true)
+	if (h_flag == false)
 	{
-		m_vx = -10.0f;
+		if (turn_flag == true)
+		{
+			m_vx = -10.0f;
+		}
+		if (turn_flag == false)
+		{
+			m_vx = 10.0f;
+		}
+		m_px += m_vx;
 	}
-	if (turn_flag == false)
+	if (h_flag == true)
 	{
-		m_vx = 10.0f;
+		m_vy = 10.0f;
+		m_py += m_vy;
 	}
-	m_px += m_vx;
+
+	
 
 	hit->SetPos(m_px, m_py);
 	
@@ -63,6 +74,11 @@ void CObjNormalBullet::Action()
 		Hits::DeleteHitBox(this);	
 	}
 	if (m_px <= 0)
+	{
+		this->SetStatus(false);
+		Hits::DeleteHitBox(this);
+	}
+	if (m_py > 600)
 	{
 		this->SetStatus(false);
 		Hits::DeleteHitBox(this);

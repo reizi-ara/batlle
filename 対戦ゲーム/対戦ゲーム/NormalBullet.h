@@ -8,7 +8,7 @@ using namespace GameL;
 class CObjNormalBullet : public CObj
 {
 public:
-	CObjNormalBullet(float x, float y,bool f,float c,int dam);
+	CObjNormalBullet(float x, float y,bool f,float c,int dam,bool hf);
 	~CObjNormalBullet() {};
 	void Init();   //イニシャライズ
 	void Action(); //アクション
@@ -25,4 +25,6 @@ private:
 	float color;
 
 	int damage;
+
+	bool h_flag;
 };
