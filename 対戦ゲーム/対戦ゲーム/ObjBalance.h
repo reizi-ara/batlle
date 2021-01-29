@@ -8,7 +8,7 @@ using namespace GameL;
 class CObjBalance : public CObj
 {
 public:
-	CObjBalance(float x, float y);
+	CObjBalance(float x, float y,int p_con);
 	~CObjBalance() {};
 	void Init();   //イニシャライズ
 	void Action(); //アクション
@@ -53,4 +53,6 @@ private:
 
 	int main_R;
 	int main_R_time;
+
+	int m_p_con;
 };

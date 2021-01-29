@@ -15,9 +15,10 @@ using namespace GameL;
 #include "GameHead.h"
 
 //コンストラクタ
-SceneMain::SceneMain()
+SceneMain::SceneMain(int p1_con,int p2_con)
 {
-
+	m_p1_con = p1_con;
+	m_p2_con = p2_con;
 }
 
 //デストラクタ
@@ -35,12 +36,34 @@ void SceneMain::InitScene()
 	Draw::LoadImage(L"HPゲージ.png", 4, TEX_SIZE_512);
 	Draw::LoadImage(L"ブーストゲージ.png", 5, TEX_SIZE_512);
 
-	CObjMain* m = new CObjMain(30.0f, 1.0f);
-	Objs::InsertObj(m, OBJ_MAIN, 1);
-	CObjBalance* b = new CObjBalance(738.0f, 1.0f);
-	Objs::InsertObj(b, OBJ_BALANCE, 1);
+	
+	
+
+	if (m_p1_con == 1)
+	{
+		CObjMain* m = new CObjMain(30.0f, 1.0f, 1);
+		Objs::InsertObj(m, OBJ_MAIN, 5);
+	}
+	if (m_p2_con == 1)
+	{
+		CObjMain* m = new CObjMain(738.0f, 1.0f, 2);
+		Objs::InsertObj(m, OBJ_MAIN, 5);
+	}
+
+	if (m_p1_con == 2)
+	{
+		CObjBalance* b = new CObjBalance(30.0f, 1.0f, 1);
+		Objs::InsertObj(b, OBJ_BALANCE, 5);
+	}
+	if (m_p2_con == 2)
+	{
+		CObjBalance* b = new CObjBalance(738.0f, 1.0f, 2);
+		Objs::InsertObj(b, OBJ_BALANCE, 5);
+	}
+
 	CObjSceneMain* sm = new CObjSceneMain();
 	Objs::InsertObj(sm, OBJ_SCENE_MAIN, 1);
+	
 }
 
 //ゲームタイトル実行メソッド

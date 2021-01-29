@@ -11,6 +11,7 @@ enum OBJ_NAME
 	OBJ_NORMAL_BULLET,
 	OBJ_FAST_BULLET,
 	OBJ_SCENE_MAIN,
+	OBJ_SCENE_SELECT,
 };
 //------------------------------------------------
 
@@ -62,13 +63,15 @@ struct UserData
 #include"FastBullet.h"
 #include"Attack.h"
 #include"ObjSceneMain.h"
+#include"ObjSceneSelect.h"
 //------------------------------------------------
 
 //ゲームシーンクラスヘッダ------------------------
 #include "SceneMain.h"
+#include"SceneSelect.h"
 //-----------------------------------------------
 
 //シーンスタートクラス---------------------------
 //ゲーム開始時のシーンクラス登録
-#define SET_GAME_START SceneMain  
+#define SET_GAME_START SceneSelect  
 //-----------------------------------------------

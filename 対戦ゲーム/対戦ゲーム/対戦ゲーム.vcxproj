@@ -142,7 +142,9 @@
     <ClCompile Include="ObjBalance.cpp" />
     <ClCompile Include="ObjMain.cpp" />
     <ClCompile Include="ObjSceneMain.cpp" />
+    <ClCompile Include="ObjSceneSelect.cpp" />
     <ClCompile Include="SceneMain.cpp" />
+    <ClCompile Include="SceneSelect.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Attack.h" />
@@ -164,7 +166,9 @@
     <ClInclude Include="ObjBalance.h" />
     <ClInclude Include="ObjMain.h" />
     <ClInclude Include="ObjSceneMain.h" />
+    <ClInclude Include="ObjSceneSelect.h" />
     <ClInclude Include="SceneMain.h" />
+    <ClInclude Include="SceneSelect.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

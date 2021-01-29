@@ -8,12 +8,19 @@ using namespace GameL;
 class CObjSceneMain : public CObj
 {
 public:
-	CObjSceneMain() {};
+	CObjSceneMain();
 	~CObjSceneMain() {};
 	void Init();   //イニシャライズ
 	void Action(); //アクション
 	void Draw();   //ドロー
+
+	void GetVictory(int flag) { victory_flag = flag; }
 private:
 
-	
+	int victory_flag;
+
+	int m_p1;
+	int m_p2;
+	int con1_num;
+	int con2_num;
 };

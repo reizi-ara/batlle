@@ -12,10 +12,12 @@
 //使用するネームスペース
 using namespace GameL;
 
-CObjMain::CObjMain(float x, float y)
+CObjMain::CObjMain(float x, float y,int p_con)
 {
 	m_px = x;
 	m_py = y;
+
+	m_p_con = p_con;
 }
 
 //イニシャライズ
@@ -29,7 +31,10 @@ void CObjMain::Init()
 	m_vy = 0.0f;
 	m_jump_num = 0;
 
-	turn_flag = false;
+	if (m_p_con == 1)
+		turn_flag = false;
+	if (m_p_con == 2)
+		turn_flag = true;
 
 	hp = 50;
 
@@ -50,7 +55,11 @@ void CObjMain::Init()
 void CObjMain::Action()
 {
 	CHitBox* hit = Hits::GetHitBox(this);
-	con_num = Input::UpdateXControlerConnected();
+	CObjSceneMain* m = (CObjSceneMain*)Objs::GetObj(OBJ_SCENE_MAIN);
+	if (m_p_con == 1)
+		con_num = Input::UpdateXControlerConnected();
+	if (m_p_con == 2)
+		con_num = Input::UpdateXControlerConnected() - 1;
 	if (gurd_flag == false)
 	{
 		if (Input::GetConButtons(con_num, GAMEPAD_X) == true)
@@ -234,10 +243,14 @@ void CObjMain::Action()
 	//HPが0になった時
 	if (hp <= 0)
 	{
+		if (m_p_con == 1)
+			m->GetVictory(2);
+		if (m_p_con == 2)
+			m->GetVictory(1);
 		this->SetStatus(false);
 		Hits::DeleteHitBox(this);
 
-		Scene::SetScene(new SceneMain());
+		//Scene::SetScene(new SceneMain());
 	}
 
 	hit->SetPos(m_px, m_py);
@@ -270,6 +283,10 @@ void CObjMain::Draw()
 	float c[4] = { 1.0f,1.0f,1.0f,1.0f };
 	float bk_c[4] = { 0.0f,0.0f,0.0f,1.0f };
 
+	wchar_t str[256];
+	wchar_t str2[256];
+	wchar_t str3[256];
+
 	RECT_F src;
 	RECT_F dst;
 	RECT_F src2;
@@ -284,6 +301,7 @@ void CObjMain::Draw()
 	RECT_F dst6;
 	RECT_F src7;
 	RECT_F dst7;
+	
 
 	src.m_top = 0.0f;
 	src.m_left = 0.0f;
@@ -307,114 +325,237 @@ void CObjMain::Draw()
 
 	Draw::Draw(1, &src, &dst, c, 0.0f);
 
-	wchar_t str[256];
-	Font::StrDraw(L"1P", 20, 560, 20, c);
-	wchar_t str2[256];
-	wchar_t str3[256];
-	
-	//ゲージ
-	src2.m_top = 0.0f;
-	src2.m_left = 0.0f;
-	src2.m_right = 64.0f;
-	src2.m_bottom = 64.0f;
 
-	
-	dst2.m_top = 560.0f;
-	dst2.m_left = 170.0f;
-	dst2.m_right = dst2.m_left + (m_jump_num * 2);
-	dst2.m_bottom = dst2.m_top + 20.0f;
-	
-
-	Draw::Draw(2, &src2, &dst2, c, 0.0f);
-
-	//ゲージ
-	src3.m_top = 0.0f;
-	src3.m_left = 0.0f;
-	src3.m_right = 64.0f;
-	src3.m_bottom = 64.0f;
-
-
-	dst3.m_top = 560.0f;
-	dst3.m_left = 60.0f;
-	dst3.m_right = dst3.m_left + hp;
-	dst3.m_bottom = dst3.m_top + 20.0f;
-
-
-	Draw::Draw(2, &src3, &dst3, c, 0.0f);
-
-	swprintf_s(str, L"%d", hp);
-	Font::StrDraw(str, 60, 560, 20, bk_c);
-	
-
-	//ゲージ
-	src4.m_top = 0.0f;
-	src4.m_left = 0.0f;
-	src4.m_right = 64.0f;
-	src4.m_bottom = 64.0f;
-
-
-	dst4.m_top = 10.0f;
-	dst4.m_left = 120.0f;
-	dst4.m_right = dst4.m_left + sub_R * (50/3);
-	dst4.m_bottom = dst4.m_top + 20.0f;
-
-	Draw::Draw(2, &src4, &dst4, c, 0.0f);
-
-	//ゲージ
-	src5.m_top = 0.0f;
-	src5.m_left = 0.0f;
-	src5.m_right = 64.0f;
-	src5.m_bottom = 64.0f;
-
-
-	dst5.m_top = 10.0f;
-	dst5.m_left = 120.0f;
-	dst5.m_right = dst5.m_left + sub_R_time / 8;
-	dst5.m_bottom = dst5.m_top + 20.0f;
-
-	Draw::Draw(2, &src5, &dst5, bk_c, 0.0f);
-
-	swprintf_s(str2, L"サブ：%d", sub_R);
-	Font::StrDraw(str2, 60, 10, 20, bk_c);
-
-	//メインゲージ
-	src6.m_top = 0.0f;
-	src6.m_left = 0.0f;
-	src6.m_right = 64.0f;
-	src6.m_bottom = 64.0f;
-
-
-	dst6.m_top = 40.0f;
-	dst6.m_left = 120.0f;
-	dst6.m_right = dst6.m_left + main_R * 5;
-	dst6.m_bottom = dst6.m_top + 20.0f;
-
-	//メインゲージ描画
-	Draw::Draw(2, &src6, &dst6, c, 0.0f);
-
-	//メインリロードゲージ
-	src7.m_top = 0.0f;
-	src7.m_left = 0.0f;
-	src7.m_right = 64.0f;
-	src7.m_bottom = 64.0f;
-
-
-	dst7.m_top = 40.0f;
-	dst7.m_left = 120.0f;
-	dst7.m_right = dst7.m_left + main_R_time / 3;
-	dst7.m_bottom = dst7.m_top + 20.0f;
-
-	//メインリロードゲージ描画
-	Draw::Draw(2, &src7, &dst7, bk_c, 0.0f);
-
-	
-	swprintf_s(str2, L"メイン：%d", main_R);
-	Font::StrDraw(str2, 40, 40, 20, bk_c);
-
-	if (m_jump_num == 50)
+	if (m_p_con == 1)
 	{
-		if (breaktime % 5 == 0)
-			Font::StrDraw(L"OVERHEAT", 170, 560, 20, bk_c);
+
+		
+		Font::StrDraw(L"1P", 20, 560, 20, c);
+		
+
+		//ゲージ
+		src2.m_top = 0.0f;
+		src2.m_left = 0.0f;
+		src2.m_right = 64.0f;
+		src2.m_bottom = 64.0f;
+
+
+		dst2.m_top = 560.0f;
+		dst2.m_left = 170.0f;
+		dst2.m_right = dst2.m_left + (m_jump_num * 2);
+		dst2.m_bottom = dst2.m_top + 20.0f;
+
+		Draw::Draw(2, &src2, &dst2, c, 0.0f);
+		
+
+		//ゲージ
+		src3.m_top = 0.0f;
+		src3.m_left = 0.0f;
+		src3.m_right = 64.0f;
+		src3.m_bottom = 64.0f;
+
+
+		dst3.m_top = 560.0f;
+		dst3.m_left = 60.0f;
+		dst3.m_right = dst3.m_left + hp;
+		dst3.m_bottom = dst3.m_top + 20.0f;
+
+
+		Draw::Draw(2, &src3, &dst3, c, 0.0f);
+
+		swprintf_s(str, L"%d", hp);
+		Font::StrDraw(str, 60, 560, 20, bk_c);
+
+
+		//ゲージ
+		src4.m_top = 0.0f;
+		src4.m_left = 0.0f;
+		src4.m_right = 64.0f;
+		src4.m_bottom = 64.0f;
+
+
+		dst4.m_top = 10.0f;
+		dst4.m_left = 120.0f;
+		dst4.m_right = dst4.m_left + sub_R * (50 / 3);
+		dst4.m_bottom = dst4.m_top + 20.0f;
+
+		Draw::Draw(2, &src4, &dst4, c, 0.0f);
+
+		//ゲージ
+		src5.m_top = 0.0f;
+		src5.m_left = 0.0f;
+		src5.m_right = 64.0f;
+		src5.m_bottom = 64.0f;
+
+
+		dst5.m_top = 10.0f;
+		dst5.m_left = 120.0f;
+		dst5.m_right = dst5.m_left + sub_R_time / 8;
+		dst5.m_bottom = dst5.m_top + 20.0f;
+
+		Draw::Draw(2, &src5, &dst5, bk_c, 0.0f);
+
+		swprintf_s(str2, L"サブ：%d", sub_R);
+		Font::StrDraw(str2, 60, 10, 20, bk_c);
+
+		//メインゲージ
+		src6.m_top = 0.0f;
+		src6.m_left = 0.0f;
+		src6.m_right = 64.0f;
+		src6.m_bottom = 64.0f;
+
+
+		dst6.m_top = 40.0f;
+		dst6.m_left = 120.0f;
+		dst6.m_right = dst6.m_left + main_R * 5;
+		dst6.m_bottom = dst6.m_top + 20.0f;
+
+		//メインゲージ描画
+		Draw::Draw(2, &src6, &dst6, c, 0.0f);
+
+		//メインリロードゲージ
+		src7.m_top = 0.0f;
+		src7.m_left = 0.0f;
+		src7.m_right = 64.0f;
+		src7.m_bottom = 64.0f;
+
+
+		dst7.m_top = 40.0f;
+		dst7.m_left = 120.0f;
+		dst7.m_right = dst7.m_left + main_R_time / 3;
+		dst7.m_bottom = dst7.m_top + 20.0f;
+
+		//メインリロードゲージ描画
+		Draw::Draw(2, &src7, &dst7, bk_c, 0.0f);
+
+
+		swprintf_s(str2, L"メイン：%d", main_R);
+		Font::StrDraw(str2, 40, 40, 20, bk_c);
+
+		if (m_jump_num == 50)
+		{
+			if (breaktime % 5 == 0)
+				Font::StrDraw(L"OVERHEAT", 170, 560, 20, bk_c);
+		}
 	}
+	if (m_p_con == 2)
+	{
+
+		
+		//2P表記
+		Font::StrDraw(L"2P", 750, 560, 20, c);
+
+
+		//Boostゲージ
+		src2.m_top = 0.0f;
+		src2.m_left = 0.0f;
+		src2.m_right = 64.0f;
+		src2.m_bottom = 64.0f;
+
+
+		dst2.m_top = 560.0f;
+		dst2.m_left = 630.0f;
+		dst2.m_right = dst2.m_left - (m_jump_num * 2);
+		dst2.m_bottom = dst2.m_top + 20.0f;
+
+		//Boostゲージ描画
+		Draw::Draw(2, &src2, &dst2, c, 0.0f);
+
+		//HPゲージ
+		src3.m_top = 0.0f;
+		src3.m_left = 0.0f;
+		src3.m_right = 64.0f;
+		src3.m_bottom = 64.0f;
+
+
+		dst3.m_top = 560.0f;
+		dst3.m_left = 730.0f;
+		dst3.m_right = dst3.m_left - hp;
+		dst3.m_bottom = dst3.m_top + 20.0f;
+
+		//HPゲージ描画
+		Draw::Draw(2, &src3, &dst3, c, 0.0f);
+
+		//HP表示
+		swprintf_s(str, L"%d", hp);
+		Font::StrDraw(str, 710, 560, 20, bk_c);
+
+		//サブゲージ
+		src4.m_top = 0.0f;
+		src4.m_left = 0.0f;
+		src4.m_right = 64.0f;
+		src4.m_bottom = 64.0f;
+
+
+		dst4.m_top = 10.0f;
+		dst4.m_left = 610.0f;
+		dst4.m_right = dst4.m_left - sub_R * (50 / 3);
+		dst4.m_bottom = dst4.m_top + 20.0f;
+
+		//サブゲージ描画
+		Draw::Draw(2, &src4, &dst4, c, 0.0f);
+
+		//サブリロードゲージ
+		src5.m_top = 0.0f;
+		src5.m_left = 0.0f;
+		src5.m_right = 64.0f;
+		src5.m_bottom = 64.0f;
+
+
+		dst5.m_top = 10.0f;
+		dst5.m_left = 610.0f;
+		dst5.m_right = dst5.m_left - sub_R_time / 8;
+		dst5.m_bottom = dst5.m_top + 20.0f;
+
+		//サブリロードゲージ描画
+		Draw::Draw(2, &src5, &dst5, bk_c, 0.0f);
+		
+
+		swprintf_s(str2, L"%d：サブ", sub_R);
+		Font::StrDraw(str2, 600, 10, 20, bk_c);
+
+		//メインゲージ
+		src6.m_top = 0.0f;
+		src6.m_left = 0.0f;
+		src6.m_right = 64.0f;
+		src6.m_bottom = 64.0f;
+
+
+		dst6.m_top = 40.0f;
+		dst6.m_left = 610.0f;
+		dst6.m_right = dst6.m_left - main_R * 5;
+		dst6.m_bottom = dst6.m_top + 20.0f;
+
+		//メインゲージ描画
+		Draw::Draw(2, &src6, &dst6, c, 0.0f);
+
+		//メインリロードゲージ
+		src7.m_top = 0.0f;
+		src7.m_left = 0.0f;
+		src7.m_right = 64.0f;
+		src7.m_bottom = 64.0f;
+
+
+		dst7.m_top = 40.0f;
+		dst7.m_left = 610.0f;
+		dst7.m_right = dst7.m_left - main_R_time / 2;
+		dst7.m_bottom = dst7.m_top + 20.0f;
+
+		//メインリロードゲージ描画
+		Draw::Draw(2, &src7, &dst7, bk_c, 0.0f);
+
+		swprintf_s(str3, L"%d：メイン", main_R);
+		if (main_R < 10)
+			Font::StrDraw(str3, 600, 40, 20, bk_c);
+		else
+			Font::StrDraw(str3, 590, 40, 20, bk_c);
+
+		if (m_jump_num >= 50)
+		{
+			if (breaktime % 5 == 0)
+				Font::StrDraw(L"OVERHEAT", 550, 560, 20, bk_c);
+		}
+	}
+	
 }
 

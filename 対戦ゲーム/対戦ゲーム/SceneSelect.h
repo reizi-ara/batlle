@@ -6,17 +6,14 @@
 using namespace GameL;
 
 //シーン：ゲームタイトル
-class SceneMain :public CScene
+class SceneSelect :public CScene
 {
 public:
-	SceneMain(int p1_con,int p2_con);
-	~SceneMain();
+	SceneSelect();
+	~SceneSelect();
 	void InitScene(); //ゲームタイトルの初期化メソッド
 	void Scene();     //ゲームタイトルの実行中メソッド
 
 private:
-
-	int m_p1_con;
-	int m_p2_con;
 
 };

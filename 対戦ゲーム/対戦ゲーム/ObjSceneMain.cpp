@@ -12,17 +12,31 @@
 //使用するネームスペース
 using namespace GameL;
 
+CObjSceneMain::CObjSceneMain()
+{
+
+}
 
 //イニシャライズ
 void CObjSceneMain::Init()
 {
-	
+	victory_flag = 0;
+	con1_num = 0;
+	con2_num = 0;
 }
 
 //アクション
 void CObjSceneMain::Action()
 {
-	
+		con1_num = Input::UpdateXControlerConnected();
+		con2_num = Input::UpdateXControlerConnected() - 1;
+	if (victory_flag != 0)
+	{
+		if (Input::GetConButtons(con1_num, GAMEPAD_B) == true || Input::GetConButtons(con2_num, GAMEPAD_B) == true)
+		{
+			Scene::SetScene(new SceneSelect());
+		}
+	}
 }
 
 //ドロー
@@ -115,5 +129,18 @@ void CObjSceneMain::Draw()
 
 	Font::StrDraw(L"Bust", 600, 580, 15, bk_c);
 	Font::StrDraw(L"Bust", 170, 580, 15, bk_c);
+
+	if (victory_flag == 1)
+	{
+		Font::StrDraw(L"WIN1P", 337.5f, 250, 50, c);
+		Font::StrDraw(L"Press:B", 317.5f, 350, 50, c);
+	}
+		
+	if (victory_flag == 2)
+	{
+		Font::StrDraw(L"WIN2P", 337.5f, 250, 50, c);
+		Font::StrDraw(L"Press:B", 317.5f, 350, 50, c);
+	}
+		
 }
 
