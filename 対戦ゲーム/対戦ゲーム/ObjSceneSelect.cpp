@@ -99,7 +99,7 @@ void CObjSceneSelect::Action()
 	{
 		m_p2_vx = 0.0f;
 	}
-	if (Input::GetConVecStickLY(m_p2_con_num) == 0.0f)
+	if (Input::GetConVecStickLX(m_p2_con_num) == 0.0f)
 	{
 		m_p2_vy = 0.0f;
 	}

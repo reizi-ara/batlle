@@ -37,6 +37,7 @@ void CObjNormalBullet::Action()
 {
 	CHitBox* hit = Hits::GetHitBox(this);
 	CObjMain* m = (CObjMain*)Objs::GetObj(OBJ_MAIN);
+	CObjAttack* a = (CObjAttack*)Objs::GetObj(OBJ_ATTACK);
 
 	if (h_flag == false)
 	{
@@ -66,6 +67,16 @@ void CObjNormalBullet::Action()
 		Hits::DeleteHitBox(this);
 
 		m->GetDamege(damage);
+		
+	}
+
+	if (hit->CheckElementHit(ELEMENT_ATTACK) == true)
+	{
+		this->SetStatus(false);
+		Hits::DeleteHitBox(this);
+		if (h_flag == false)
+			m->GetVX(m_vx / 10.0f);
+		a->GetPoint();
 	}
 
 	if (m_px + 8.0f >= 800)

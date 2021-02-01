@@ -11,7 +11,7 @@
 //使用するネームスペース
 using namespace GameL;
 
-CObjAttack::CObjAttack(float x, float y, bool f, float c)
+CObjAttack::CObjAttack(float x, float y, bool f, float c,int con_num)
 {
 	m_px = x;
 	m_py = y;
@@ -20,23 +20,88 @@ CObjAttack::CObjAttack(float x, float y, bool f, float c)
 
 	color = c;
 
+	m_con_num = con_num;
+
 }
 
 //イニシャライズ
 void CObjAttack::Init()
 {
-	
+	gurd_point = 0;
+
+	if (turn_flag == true)//左向き
+		Hits::SetHitBox(this, m_px - 16.0f, m_py, 16.0f, 32.0f, ELEMENT_ATTACK, OBJ_ATTACK, 1);
+	if (turn_flag == false)//右向き
+		Hits::SetHitBox(this, m_px + 32.0f, m_py, 16.0f, 32.0f, ELEMENT_ATTACK, OBJ_ATTACK, 1);
 }
 
 //アクション
 void CObjAttack::Action()
 {
-	
+	CHitBox* hit = Hits::GetHitBox(this);
+	if (m_con_num == 1)//1の時浮遊タイプ
+	{
+		CObjBalance* b = (CObjBalance*)Objs::GetObj(OBJ_BALANCE);
+		if (turn_flag == true)//左向き
+		{
+			m_px = b->GetPX() - 16.0f;
+			m_py = b->GetPY();
+		}
+		if (turn_flag == false)//右向き
+		{
+			m_px = b->GetPX() + 32.0f;
+			m_py = b->GetPY();
+		}
+		
+		if (b->GetGurd() == false)
+		{
+			this->SetStatus(false);
+			Hits::DeleteHitBox(this);
+		}
+
+		if (gurd_point >= 10)
+		{
+			this->SetStatus(false);
+			Hits::DeleteHitBox(this);
+			b->GetJump();
+		}
+	}
+	if (m_con_num == 2)//2の時砲撃タイプ
+	{
+		CObjMain* m = (CObjMain*)Objs::GetObj(OBJ_MAIN);
+
+		if (turn_flag == true)//左向き
+		{
+			m_px = m->GetPX() - 16.0f;
+			m_py = m->GetPY();
+		}
+		if (turn_flag == false)//右向き
+		{
+			m_px = m->GetPX() + 32.0f;
+			m_py = m->GetPY();
+		}
+
+		if (m->GetGurd() == false)
+		{
+			this->SetStatus(false);
+			Hits::DeleteHitBox(this);
+		}
+		if (gurd_point >= 10)
+		{
+			this->SetStatus(false);
+			Hits::DeleteHitBox(this);
+			m->GetJump();
+		}
+	}
+
+	hit->SetPos(m_px, m_py);
 }
 
 //ドロー
 void CObjAttack::Draw()
 {
+	CHitBox* hit = Hits::GetHitBox(this);
+
 	float c[4] = { 1.0f,color,color,1.0f };
 
 	RECT_F src;
@@ -49,8 +114,12 @@ void CObjAttack::Draw()
 
 	dst.m_top = m_py;
 	dst.m_left = m_px;
-	dst.m_right = 8.0f + m_px;
-	dst.m_bottom = 8.0f + m_py;
+	dst.m_right = 16.0f + m_px;
+	dst.m_bottom = 32.0f + m_py;
 
-	Draw::Draw(2, &src, &dst, c, 0.0f);
+	if (hit->CheckElementHit(ELEMENT_BULLET) == true)
+	{
+		Draw::Draw(2, &src, &dst, c, 0.0f);
+	}
+	
 }

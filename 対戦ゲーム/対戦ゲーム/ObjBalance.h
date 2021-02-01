@@ -14,11 +14,23 @@ public:
 	void Action(); //アクション
 	void Draw();   //ドロー
 
+	float GetPX() { return m_px; }
+	float GetPY() { return m_py; }
+
+	bool GetGurd() { return gurd_flag; }
+
+
 	void GetDamege(int dam)
 	{
 		if (gurd_flag == false)
 			hp -= dam;
 	}
+	void GetVX(float x)
+	{
+		m_px += x;
+	}
+
+	void GetJump() { m_jump_num = 500; }
 private:
 
 	float m_px;
@@ -55,4 +67,6 @@ private:
 	int main_R_time;
 
 	int m_p_con;
+
+	bool gurd_time;
 };

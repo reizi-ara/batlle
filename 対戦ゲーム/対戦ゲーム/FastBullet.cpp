@@ -36,6 +36,7 @@ void CObjFastBullet::Action()
 {
 	CHitBox* hit = Hits::GetHitBox(this);
 	CObjBalance* b = (CObjBalance*)Objs::GetObj(OBJ_BALANCE);
+	CObjAttack* a = (CObjAttack*)Objs::GetObj(OBJ_ATTACK);
 
 	if (turn_flag == true)
 	{
@@ -55,6 +56,15 @@ void CObjFastBullet::Action()
 		Hits::DeleteHitBox(this);
 
 		b->GetDamege(damage);
+		
+	}
+
+	if (hit->CheckElementHit(ELEMENT_ATTACK) == true)
+	{
+		this->SetStatus(false);
+		Hits::DeleteHitBox(this);
+		b->GetVX(m_vx / 10.0f);
+		a->GetPoint();
 	}
 	if (m_px + 8.0f >= 800)
 	{

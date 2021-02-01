@@ -35,6 +35,7 @@ void SceneMain::InitScene()
 	Draw::LoadImage(L"ステージ.png", 3, TEX_SIZE_512);
 	Draw::LoadImage(L"HPゲージ.png", 4, TEX_SIZE_512);
 	Draw::LoadImage(L"ブーストゲージ.png", 5, TEX_SIZE_512);
+	Draw::LoadImage(L"白防御.png", 6, TEX_SIZE_512);
 
 	
 	

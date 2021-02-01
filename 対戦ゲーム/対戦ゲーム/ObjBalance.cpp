@@ -49,6 +49,8 @@ void CObjBalance::Init()
 	sub_R = 3;
 	sub_R_time = 0;
 
+	gurd_time = false;
+
 	Hits::SetHitBox(this, m_px, m_py, 32.0f, 32.0f, ELEMENT_PLAYER2, OBJ_BALANCE, 1);
 }
 
@@ -255,20 +257,27 @@ void CObjBalance::Action()
 	if (Input::GetConButtons(con_num, GAMEPAD_LEFT_SHOULDER) == false)
 	{
 		gurd_flag = false;
+		gurd_time = false;
 	}
 	//ガードをしているとき
 	if (Input::GetConButtons(con_num, GAMEPAD_LEFT_SHOULDER) == true)
 	{
-		/*if (m_jump_num < 500)
+		if (m_jump_num < 500)
 		{
 			gurd_flag = true;
 			m_jump_num += 10;
-		}*/
-		/*if (hit->CheckObjNameHit(OBJ_FAST_BULLET) != nullptr&&gurd_flag == false)
-		{
-			hp -= 1;
-		}*/
-		
+			if (gurd_time == false)
+			{
+				CObjAttack* a = new CObjAttack(m_px, m_py, turn_flag, 0.0f, 1);
+				Objs::InsertObj(a, OBJ_ATTACK, 1);
+				gurd_time = true;
+			}
+			
+		}
+	}
+	if (hit->CheckObjNameHit(OBJ_FAST_BULLET) != nullptr)
+	{
+		hp -= 1;
 	}
 	//ブースト残量がないためガードをできない
 	if (m_jump_num >= 500)
@@ -276,6 +285,7 @@ void CObjBalance::Action()
 		gurd_flag = false;
 		if (breaktime < 20 && m_hit_down == true)
 			breaktime++;
+		gurd_time = false;
 	}
 	//HPが0になった時
 	if (hp <= 0)
@@ -317,6 +327,12 @@ void CObjBalance::Draw()
 	float c[4] = { 1.0f,0.0f,0.0f,1.0f };
 	float b_c[4] = { 1.0f,0.0f,1.0f,1.0f };
 	float bk_c[4] = { 0.0f,0.0f,0.0f,1.0f };
+	int gd = 1;
+
+	if (gurd_flag == true)
+	{
+		gd = 6;
+	}
 
 	RECT_F src;
 	RECT_F dst;
@@ -363,13 +379,13 @@ void CObjBalance::Draw()
 	if (boost_flag == false)
 	{
 		//バランスタイプ描画
-		Draw::Draw(1, &src, &dst, c, 0.0f);
+		Draw::Draw(gd, &src, &dst, c, 0.0f);
 	}
 
 	if (boost_flag == true)
 	{
 		//バランスタイプ描画
-		Draw::Draw(1, &src, &dst, b_c, 0.0f);
+		Draw::Draw(gd, &src, &dst, b_c, 0.0f);
 	}
 	if (m_p_con == 1)
 	{
