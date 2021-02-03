@@ -50,6 +50,9 @@ void CObjMain::Init()
 	main_R_time = 0;
 
 	gurd_time = false;
+
+	bullet_num = 0;
+	bullet_time = 0;
 	
 	Hits::SetHitBox(this, m_px, m_py, 32.0f, 32.0f, ELEMENT_PLAYER, OBJ_BALANCE, 1);
 }
@@ -69,7 +72,7 @@ void CObjMain::Action()
 		{
 			if (bullet_flag == true && breaktime == 0 && main_R > 0)
 			{
-				CObjFastBullet* nb = new CObjFastBullet(m_px + 16.0f, m_py + 16.0f, turn_flag, 1.0f, 2, enemy_num);
+				CObjFastBullet* nb = new CObjFastBullet(m_px + 16.0f, m_py + 16.0f, turn_flag, 1.0f, 2, enemy_num, 0);
 				Objs::InsertObj(nb, OBJ_FAST_BULLET, 1);
 				
 				bullet_flag = false;
@@ -82,32 +85,107 @@ void CObjMain::Action()
 
 		if (Input::GetConButtons(con_num, GAMEPAD_RIGHT_SHOULDER) == true)
 		{
-			if (sub_bullet_flag == true && breaktime == 0 && sub_R > 0)
+			if (breaktime == 0)
 			{
-				for (int i = 0; i < 10; i++)
+				bullet_time++;
+				if (bullet_time >= 30)
 				{
-					if (turn_flag == false)
-					{
-						CObjFastBullet* nb = new CObjFastBullet(m_px + 16.0f + (i * 8), m_py + 16.0f, turn_flag, 1.0f, 1, enemy_num);
-						Objs::InsertObj(nb, OBJ_FAST_BULLET, 1);
-						
-						
-					}
-					if (turn_flag == true)
-					{
-						CObjFastBullet* nb = new CObjFastBullet(m_px + 16.0f - (8 * i), m_py + 16.0f, turn_flag, 1.0f, 1, enemy_num);
-						Objs::InsertObj(nb, OBJ_FAST_BULLET, 1);
-						
-						
-					}
-					
+					if (bullet_num < 30)
+						bullet_num += 5;
+					bullet_time = 0;
 				}
-				sub_R--;
-				sub_bullet_flag = false;
 			}
 		}
-		else
-			sub_bullet_flag = true;
+		else if (Input::GetConButtons(con_num, GAMEPAD_RIGHT_SHOULDER) == false)
+		{
+			if (breaktime == 0)
+			{
+				if (bullet_num > 0)
+				{
+					if (bullet_num < 20)
+					{
+						for (int i = 0; i < bullet_num; i++)
+						{
+							if (turn_flag == false)
+							{
+								CObjFastBullet* nb = new CObjFastBullet(m_px + 16.0f + (i * 8), m_py + 16.0f, turn_flag, 1.0f, 1, enemy_num, bullet_num);
+								Objs::InsertObj(nb, OBJ_FAST_BULLET, 1);
+							}
+							if (turn_flag == true)
+							{
+								CObjFastBullet* nb = new CObjFastBullet(m_px + 16.0f - (8 * i), m_py + 16.0f, turn_flag, 1.0f, 1, enemy_num, bullet_num);
+								Objs::InsertObj(nb, OBJ_FAST_BULLET, 1);
+							}
+						}
+						
+						bullet_time = 0;
+						bullet_num = 0;
+					}
+					if (bullet_num >= 20)
+					{
+						for (int i = 0; i < bullet_num/2; i++)
+						{
+							if (turn_flag == false)
+							{
+								CObjFastBullet* nb = new CObjFastBullet(m_px + 16.0f + (i * 8), m_py + 20.0f, turn_flag, 1.0f, 1, enemy_num, bullet_num);
+								Objs::InsertObj(nb, OBJ_FAST_BULLET, 1);
+							}
+							if (turn_flag == true)
+							{
+								CObjFastBullet* nb = new CObjFastBullet(m_px + 16.0f - (8 * i), m_py + 20.0f, turn_flag, 1.0f, 1, enemy_num, bullet_num);
+								Objs::InsertObj(nb, OBJ_FAST_BULLET, 1);
+							}
+							if (turn_flag == false)
+							{
+								CObjFastBullet* nb = new CObjFastBullet(m_px + 16.0f + (i * 8), m_py + 12.0f, turn_flag, 1.0f, 1, enemy_num, bullet_num);
+								Objs::InsertObj(nb, OBJ_FAST_BULLET, 1);
+							}
+							if (turn_flag == true)
+							{
+								CObjFastBullet* nb = new CObjFastBullet(m_px + 16.0f - (8 * i), m_py + 12.0f, turn_flag, 1.0f, 1, enemy_num, bullet_num);
+								Objs::InsertObj(nb, OBJ_FAST_BULLET, 1);
+							}
+						}
+						if (turn_flag == false)
+						{
+							for (int i = 0; i < 5; i++)
+							{
+								CObjFastBullet* nb = new CObjFastBullet(m_px + i * 8.0f, m_py + (i * 8.0f) + 20.0f, turn_flag, 1.0f, 1, enemy_num, -1);
+								Objs::InsertObj(nb, OBJ_FAST_BULLET, 1);
+							}
+							for (int i = 0; i < 5; i++)
+							{
+								CObjFastBullet* nb = new CObjFastBullet(m_px + i * 8.0f, m_py - i * 8.0f, turn_flag, 1.0f, 1, enemy_num, -2);
+								Objs::InsertObj(nb, OBJ_FAST_BULLET, 1);
+							}
+						}
+						if (turn_flag == true)
+						{
+							for (int i = 0; i < 5; i++)
+							{
+								CObjFastBullet* nb = new CObjFastBullet(m_px - i * 8.0f, m_py + (i * 8.0f) + 20.0f, turn_flag, 1.0f, 1, enemy_num, -1);
+								Objs::InsertObj(nb, OBJ_FAST_BULLET, 1);
+							}
+							for (int i = 0; i < 5; i++)
+							{
+								CObjFastBullet* nb = new CObjFastBullet(m_px - i * 8.0f, m_py - i * 8.0f, turn_flag, 1.0f, 1, enemy_num, -2);
+								Objs::InsertObj(nb, OBJ_FAST_BULLET, 1);
+							}
+						}
+						bullet_time = 0;
+						bullet_num = 0;
+					}
+
+					
+				}
+			}
+			else
+			{
+				bullet_time = 0;
+				bullet_num = 0;
+			}
+		}
+			
 
 
 		if (breaktime == 0)
@@ -188,7 +266,6 @@ void CObjMain::Action()
 		m_py = 536.0f - 32.0f;
 		if (gurd_flag == false && breaktime == 20)
 		{
-
 			m_jump_num = 0;
 			breaktime = 0;
 		}
@@ -252,6 +329,8 @@ void CObjMain::Action()
 	//ブースト残量がないためガードをできない
 	if (m_jump_num == 50)
 	{
+		bullet_time = 0;
+		bullet_num = 0;
 		gurd_flag = false;
 		if (breaktime < 20 && m_hit_down == true)
 			breaktime++;
@@ -272,7 +351,7 @@ void CObjMain::Action()
 
 	hit->SetPos(m_px, m_py);
 
-	if (sub_R == 0)
+	/*if (sub_R == 0)
 	{
 		sub_R_time++;
 	}
@@ -282,7 +361,7 @@ void CObjMain::Action()
 		sub_R = 3;
 		sub_R_time = 0;
 	}
-
+	*/
 	if (main_R == 0)
 	{
 		main_R_time++;
@@ -400,12 +479,12 @@ void CObjMain::Draw()
 
 		dst4.m_top = 10.0f;
 		dst4.m_left = 120.0f;
-		dst4.m_right = dst4.m_left + sub_R * (50 / 3);
+		dst4.m_right = dst4.m_left + bullet_num * (50 / 30)*2;
 		dst4.m_bottom = dst4.m_top + 20.0f;
 
 		Draw::Draw(2, &src4, &dst4, c, 0.0f);
 
-		//ゲージ
+		/*//ゲージ
 		src5.m_top = 0.0f;
 		src5.m_left = 0.0f;
 		src5.m_right = 64.0f;
@@ -417,9 +496,9 @@ void CObjMain::Draw()
 		dst5.m_right = dst5.m_left + sub_R_time / 8;
 		dst5.m_bottom = dst5.m_top + 20.0f;
 
-		Draw::Draw(2, &src5, &dst5, bk_c, 0.0f);
+		Draw::Draw(2, &src5, &dst5, bk_c, 0.0f);*/
 
-		swprintf_s(str2, L"サブ：%d", sub_R);
+		swprintf_s(str2, L"サブ：%d", bullet_num);
 		Font::StrDraw(str2, 60, 10, 20, bk_c);
 
 		//メインゲージ
@@ -513,13 +592,13 @@ void CObjMain::Draw()
 
 		dst4.m_top = 10.0f;
 		dst4.m_left = 610.0f;
-		dst4.m_right = dst4.m_left - sub_R * (50 / 3);
+		dst4.m_right = dst4.m_left - bullet_num * (50 / 30)*2;
 		dst4.m_bottom = dst4.m_top + 20.0f;
 
 		//サブゲージ描画
 		Draw::Draw(2, &src4, &dst4, c, 0.0f);
 
-		//サブリロードゲージ
+		/*//サブリロードゲージ
 		src5.m_top = 0.0f;
 		src5.m_left = 0.0f;
 		src5.m_right = 64.0f;
@@ -534,9 +613,15 @@ void CObjMain::Draw()
 		//サブリロードゲージ描画
 		Draw::Draw(2, &src5, &dst5, bk_c, 0.0f);
 		
+		*/
 
-		swprintf_s(str2, L"%d：サブ", sub_R);
-		Font::StrDraw(str2, 600, 10, 20, bk_c);
+		swprintf_s(str2, L"%d：サブ", bullet_num);
+
+		if (bullet_num < 10)
+			Font::StrDraw(str2, 600, 10, 20, bk_c);
+		else
+			Font::StrDraw(str2, 590, 10, 20, bk_c);
+		
 
 		//メインゲージ
 		src6.m_top = 0.0f;

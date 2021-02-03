@@ -73,15 +73,18 @@ void CObjBalance::Action()
 		{
 			if (bullet_flag == true && breaktime == 0 && main_R > 0&&boost_flag == false)
 			{
-				CObjNormalBullet* nb = new CObjNormalBullet(m_px + 16.0f, m_py + 16.0f, turn_flag, 0.0f, 2, false, enemy_num);
+				CObjNormalBullet* nb = new CObjNormalBullet(m_px + 16.0f, m_py + 16.0f, turn_flag, 0.0f, 2, false, enemy_num, 0);
 				Objs::InsertObj(nb, OBJ_NORMAL_BULLET, 1);
 				bullet_flag = false;
 				main_R--;
 			}
 			if (bullet_flag == true && breaktime == 0 && boost_flag == true)
 			{
-				CObjNormalBullet* nb = new CObjNormalBullet(m_px + 16.0f, m_py + 16.0f, turn_flag, 0.0f, 3, true, enemy_num);
-				Objs::InsertObj(nb, OBJ_NORMAL_BULLET, 1);
+				for (int i = 0; i < 2; i++)
+				{
+					CObjNormalBullet* nb = new CObjNormalBullet(m_px + 16.0f, m_py + 16.0f, turn_flag, 0.0f, 2, true, enemy_num, i);
+					Objs::InsertObj(nb, OBJ_NORMAL_BULLET, 1);
+				}
 				bullet_flag = false;
 			}
 		}

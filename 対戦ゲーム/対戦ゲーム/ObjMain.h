@@ -71,4 +71,8 @@ private:
 	bool gurd_time;
 
 	int enemy_num;
+
+	int bullet_time;
+
+	int bullet_num;
 };

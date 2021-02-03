@@ -11,7 +11,7 @@
 //使用するネームスペース
 using namespace GameL;
 
-CObjNormalBullet::CObjNormalBullet(float x, float y,bool f,float c,int dam,bool hf,int enemy)
+CObjNormalBullet::CObjNormalBullet(float x, float y,bool f,float c,int dam,bool hf,int enemy,int bullet)
 {
 	m_px = x;
 	m_py = y;
@@ -23,6 +23,8 @@ CObjNormalBullet::CObjNormalBullet(float x, float y,bool f,float c,int dam,bool 
 	h_flag = hf;
 
 	enemy_num = enemy;
+
+	bullet_num = bullet;
 }
 
 //イニシャライズ
@@ -30,6 +32,8 @@ void CObjNormalBullet::Init()
 {
 	m_vx = 0.0f;
 	m_vy = 0.0f;
+
+	turn_time = 0.0f;
 
 	Hits::SetHitBox(this, m_px, m_py, 8.0f, 8.0f, ELEMENT_NORMAL_BULLET, OBJ_NORMAL_BULLET, 1);
 }
@@ -42,6 +46,12 @@ void CObjNormalBullet::Action()
 	
 	CObjAttack* a = (CObjAttack*)Objs::GetObj(OBJ_ATTACK);
 
+	if (turn_time >= 360.0f)
+	{
+		turn_time = 0.0f;
+	}
+	turn_time += 2.0f;
+
 	if (h_flag == false)
 	{
 		if (turn_flag == true)
@@ -52,14 +62,36 @@ void CObjNormalBullet::Action()
 		{
 			m_vx = 10.0f;
 		}
-		m_px += m_vx;
+		
 	}
 	if (h_flag == true)
 	{
-		m_vy = 10.0f;
-		m_py += m_vy;
+		switch (bullet_num)
+		{
+			/*case 0:
+			{
+				m_vx = 0.0f;
+				m_vy = 10.0f;
+				break;
+			}*/
+			case 0:
+			{
+				m_vx = 2.0f;
+				m_vy = 10.0f;
+				break;
+			}
+			case 1:
+			{
+				m_vx = -2.0f;
+				m_vy = 10.0f;
+				break;
+			}
+		}
 	}
 
+
+	m_px += m_vx;
+	m_py += m_vy;
 	
 
 	hit->SetPos(m_px, m_py);
@@ -143,5 +175,5 @@ void CObjNormalBullet::Draw()
 	dst.m_right = 8.0f + m_px;
 	dst.m_bottom = 8.0f + m_py;
 
-	Draw::Draw(2, &src, &dst, c, 0.0f);
+	Draw::Draw(2, &src, &dst, c, turn_time);
 }

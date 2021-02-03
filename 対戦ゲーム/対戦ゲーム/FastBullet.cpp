@@ -11,7 +11,7 @@
 //使用するネームスペース
 using namespace GameL;
 
-CObjFastBullet::CObjFastBullet(float x, float y, bool f, float c,int dam,int enemy)
+CObjFastBullet::CObjFastBullet(float x, float y, bool f, float c,int dam,int enemy,int bullet)
 {
 	m_px = x;
 	m_py = y;
@@ -22,6 +22,8 @@ CObjFastBullet::CObjFastBullet(float x, float y, bool f, float c,int dam,int ene
 	damage = dam;
 
 	enemy_num = enemy;
+
+	bullet_num = bullet;
 }
 
 //イニシャライズ
@@ -29,6 +31,8 @@ void CObjFastBullet::Init()
 {
 	m_vx = 0.0f;
 	m_vy = 0.0f;
+
+	turn_time = 0.0f;
 
 	Hits::SetHitBox(this, m_px, m_py, 8.0f, 8.0f, ELEMENT_FAST_BULLET, OBJ_FAST_BULLET, 1);
 }
@@ -41,15 +45,78 @@ void CObjFastBullet::Action()
 	
 	CObjAttack* a = (CObjAttack*)Objs::GetObj(OBJ_ATTACK);
 
+	if (turn_time >= 360.0f)
+	{
+		turn_time = 0.0f;
+	}
+	turn_time += 2.0f;
+
 	if (turn_flag == true)
 	{
-		m_vx = -10.0f;
+		if (bullet_num ==-1)
+		{
+			m_vx = -10.0f;
+			m_vy = 2.0f;
+		}
+		if (bullet_num == -2)
+		{
+			m_vx = -10.0f;
+			m_vy = -2.0f;
+		}
+		if (bullet_num >= 0)
+		{
+			m_vx = -10.0f;
+			m_vy = 0.0f;
+		}
+		/*if (bullet_num >= 20)
+		{
+			for (int i = 0; i < 5; i++)
+			{
+				CObjFastBullet* nb = new CObjFastBullet(m_px - i, m_py - i, turn_flag, 1.0f, 1, enemy_num, -1);
+				Objs::InsertObj(nb, OBJ_FAST_BULLET, 1);
+			}
+			for (int i = 0; i < 5; i++)
+			{
+				CObjFastBullet* nb = new CObjFastBullet(m_px - i, m_py + i, turn_flag, 1.0f, 1, enemy_num, -2);
+				Objs::InsertObj(nb, OBJ_FAST_BULLET, 1);
+			}
+			bullet_num = 0;
+		}*/
 	}
 	if (turn_flag == false)
 	{
-		m_vx = 10.0f;
+		if (bullet_num == -1)
+		{
+			m_vx = 10.0f;
+			m_vy = 2.0f;
+		}
+		if (bullet_num == -2)
+		{
+			m_vx = 10.0f;
+			m_vy = -2.0f;
+		}
+		if (bullet_num >= 0)
+		{
+			m_vx = 10.0f;
+			m_vy = 0.0f;
+		}
+		/*if (bullet_num >= 20)
+		{
+			for (int i = 0; i < 5; i++)
+			{
+				CObjFastBullet* nb = new CObjFastBullet(m_px + i, m_py + i, turn_flag, 1.0f, 1, enemy_num, -1);
+				Objs::InsertObj(nb, OBJ_FAST_BULLET, 1);
+			}
+			for (int i = 0; i < 5; i++)
+			{
+				CObjFastBullet* nb = new CObjFastBullet(m_px + i, m_py - i, turn_flag, 1.0f, 1, enemy_num, -2);
+				Objs::InsertObj(nb, OBJ_FAST_BULLET, 1);
+			}
+			bullet_num = 0;
+		}*/
 	}
 	m_px += m_vx;
+	m_py += m_vy;
 	
 	hit->SetPos(m_px, m_py);
 
@@ -126,5 +193,8 @@ void CObjFastBullet::Draw()
 	dst.m_right = 8.0f + m_px;
 	dst.m_bottom = 8.0f + m_py;
 
-	Draw::Draw(2, &src, &dst, c, 0.0f);
+	if (damage == 1)
+		Draw::Draw(2, &src, &dst, c, 0.0f);
+	if (damage == 2)
+		Draw::Draw(2, &src, &dst, c, turn_time);
 }
