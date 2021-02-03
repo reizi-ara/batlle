@@ -275,10 +275,10 @@ void CObjBalance::Action()
 			
 		}
 	}
-	if (hit->CheckObjNameHit(OBJ_FAST_BULLET) != nullptr)
+	/*if (hit->CheckObjNameHit(OBJ_FAST_BULLET) != nullptr)
 	{
 		hp -= 1;
-	}
+	}*/
 	//ブースト残量がないためガードをできない
 	if (m_jump_num >= 500)
 	{

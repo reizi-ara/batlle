@@ -70,14 +70,14 @@ void CObjMain::Action()
 			{
 				CObjFastBullet* nb = new CObjFastBullet(m_px + 16.0f, m_py + 16.0f, turn_flag, 1.0f, 2);
 				Objs::InsertObj(nb, OBJ_FAST_BULLET, 1);
+				
 				bullet_flag = false;
 				main_R--;
 			}
 		}
 		else
 			bullet_flag = true;
-
-
+		
 
 		if (Input::GetConButtons(con_num, GAMEPAD_RIGHT_SHOULDER) == true)
 		{
@@ -90,11 +90,13 @@ void CObjMain::Action()
 						CObjFastBullet* nb = new CObjFastBullet(m_px + 16.0f + (i * 8), m_py + 16.0f, turn_flag, 1.0f, 1);
 						Objs::InsertObj(nb, OBJ_FAST_BULLET, 1);
 						
+						
 					}
 					if (turn_flag == true)
 					{
 						CObjFastBullet* nb = new CObjFastBullet(m_px + 16.0f - (8 * i), m_py + 16.0f, turn_flag, 1.0f, 1);
 						Objs::InsertObj(nb, OBJ_FAST_BULLET, 1);
+						
 						
 					}
 					
@@ -238,10 +240,10 @@ void CObjMain::Action()
 			m_jump_num += 1;
 		}
 	}
-	if (hit->CheckObjNameHit(OBJ_NORMAL_BULLET) != nullptr)
+	/*if (hit->CheckObjNameHit(OBJ_NORMAL_BULLET) != nullptr)
 	{
 		hp -= 1;
-	}
+	}*/
 	//ブースト残量がないためガードをできない
 	if (m_jump_num == 50)
 	{
