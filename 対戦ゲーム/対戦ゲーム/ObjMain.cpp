@@ -150,12 +150,12 @@ void CObjMain::Action()
 						{
 							for (int i = 0; i < 5; i++)
 							{
-								CObjFastBullet* nb = new CObjFastBullet(m_px + i * 8.0f, m_py + (i * 8.0f) + 20.0f, turn_flag, 1.0f, 1, enemy_num, -1);
+								CObjFastBullet* nb = new CObjFastBullet(m_px + i * 8.0f, m_py + 28.0f, turn_flag, 1.0f, 1, enemy_num, -1);
 								Objs::InsertObj(nb, OBJ_FAST_BULLET, 1);
 							}
 							for (int i = 0; i < 5; i++)
 							{
-								CObjFastBullet* nb = new CObjFastBullet(m_px + i * 8.0f, m_py - i * 8.0f, turn_flag, 1.0f, 1, enemy_num, -2);
+								CObjFastBullet* nb = new CObjFastBullet(m_px + i * 8.0f, m_py + 4.0f, turn_flag, 1.0f, 1, enemy_num, -2);
 								Objs::InsertObj(nb, OBJ_FAST_BULLET, 1);
 							}
 						}
@@ -163,12 +163,12 @@ void CObjMain::Action()
 						{
 							for (int i = 0; i < 5; i++)
 							{
-								CObjFastBullet* nb = new CObjFastBullet(m_px - i * 8.0f, m_py + (i * 8.0f) + 20.0f, turn_flag, 1.0f, 1, enemy_num, -1);
+								CObjFastBullet* nb = new CObjFastBullet(m_px - i * 8.0f, m_py + 28.0f, turn_flag, 1.0f, 1, enemy_num, -1);
 								Objs::InsertObj(nb, OBJ_FAST_BULLET, 1);
 							}
 							for (int i = 0; i < 5; i++)
 							{
-								CObjFastBullet* nb = new CObjFastBullet(m_px - i * 8.0f, m_py - i * 8.0f, turn_flag, 1.0f, 1, enemy_num, -2);
+								CObjFastBullet* nb = new CObjFastBullet(m_px - i * 8.0f, m_py + 4.0f, turn_flag, 1.0f, 1, enemy_num, -2);
 								Objs::InsertObj(nb, OBJ_FAST_BULLET, 1);
 							}
 						}

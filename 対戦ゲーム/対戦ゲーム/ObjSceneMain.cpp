@@ -37,6 +37,7 @@ void CObjSceneMain::Action()
 			Scene::SetScene(new SceneSelect());
 		}
 	}
+
 }
 
 //ƒhƒ[

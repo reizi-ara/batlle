@@ -272,7 +272,7 @@ void CObjBreak::Action()
 	{
 		main_R_time++;
 	}
-	if (main_R_time == 150)
+	if (main_R_time == 120)
 	{
 		main_R = 10;
 		main_R_time = 0;
@@ -432,7 +432,7 @@ void CObjBreak::Draw()
 
 		dst7.m_top = 40.0f;
 		dst7.m_left = 120.0f;
-		dst7.m_right = dst7.m_left + main_R_time / 3;
+		dst7.m_right = dst7.m_left + main_R_time / 12 * 5;
 		dst7.m_bottom = dst7.m_top + 20.0f;
 
 		//メインリロードゲージ描画
@@ -548,7 +548,7 @@ void CObjBreak::Draw()
 
 		dst7.m_top = 40.0f;
 		dst7.m_left = 610.0f;
-		dst7.m_right = dst7.m_left - main_R_time / 2;
+		dst7.m_right = dst7.m_left - main_R_time / 12 * 5;
 		dst7.m_bottom = dst7.m_top + 20.0f;
 
 		//メインリロードゲージ描画

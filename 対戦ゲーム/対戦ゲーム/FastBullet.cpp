@@ -88,12 +88,12 @@ void CObjFastBullet::Action()
 		if (bullet_num == -1)
 		{
 			m_vx = 10.0f;
-			m_vy = 2.0f;
+			m_vy = 1.0f;
 		}
 		if (bullet_num == -2)
 		{
 			m_vx = 10.0f;
-			m_vy = -2.0f;
+			m_vy = -1.0f;
 		}
 		if (bullet_num >= 0)
 		{

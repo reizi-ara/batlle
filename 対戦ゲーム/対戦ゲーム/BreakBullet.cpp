@@ -185,7 +185,7 @@ void CObjBreakBullet::Action()
 	{
 		m_vx = 0;
 		break_time++;
-		if (break_time >= 120)
+		if (break_time >= 60)
 		{
 			break_time = 0;
 			for (int i = 1; i < 17; i++)

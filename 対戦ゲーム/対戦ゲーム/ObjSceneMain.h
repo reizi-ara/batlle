@@ -14,7 +14,11 @@ public:
 	void Action(); //アクション
 	void Draw();   //ドロー
 
-	void GetVictory(int flag) { victory_flag = flag; }
+	void GetVictory(int flag) 
+	{ 
+		if (victory_flag == 0)
+			victory_flag = flag;
+	}
 private:
 
 	int victory_flag;
