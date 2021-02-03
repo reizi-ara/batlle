@@ -5,11 +5,11 @@
 using namespace GameL;
 
 //オブジェクト:タイトル
-class CObjNormalBullet : public CObj
+class CObjBreakBullet : public CObj
 {
 public:
-	CObjNormalBullet(float x, float y,bool f,float c,int dam,bool hf,int enemy);
-	~CObjNormalBullet() {};
+	CObjBreakBullet(float x, float y, bool f, float c, int dam, bool break_flag,int i,int enemy);
+	~CObjBreakBullet() {};
 	void Init();   //イニシャライズ
 	void Action(); //アクション
 	void Draw();   //ドロー
@@ -26,7 +26,13 @@ private:
 
 	int damage;
 
-	bool h_flag;
+	bool m_break_flag;
+
+	int break_time;
+
+	int line_flag;
+
+	float turn_time;
 
 	int enemy_num;
 };

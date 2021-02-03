@@ -5,11 +5,11 @@
 using namespace GameL;
 
 //オブジェクト:タイトル
-class CObjBalance : public CObj
+class CObjBreak : public CObj
 {
 public:
-	CObjBalance(float x, float y, int p_con, int enemy);
-	~CObjBalance() {};
+	CObjBreak(float x, float y, int p_con, int enemy);
+	~CObjBreak() {};
 	void Init();   //イニシャライズ
 	void Action(); //アクション
 	void Draw();   //ドロー
@@ -19,7 +19,6 @@ public:
 
 	bool GetGurd() { return gurd_flag; }
 
-
 	void GetDamege(int dam)
 	{
 			hp -= dam;
@@ -28,8 +27,7 @@ public:
 	{
 		m_px += x;
 	}
-
-	void GetJump() { m_jump_num = 500; }
+	void GetJump() { m_jump_num = 50; }
 private:
 
 	float m_px;
@@ -51,15 +49,16 @@ private:
 
 	bool bullet_flag;
 
+	bool sub_bullet_flag;
+
 	int hp;
 
 	bool gurd_flag;
 
 	int breaktime;
 
-	bool boost_flag;
-
 	int sub_R;
+
 	int sub_R_time;
 
 	int main_R;

@@ -11,12 +11,14 @@
 //使用するネームスペース
 using namespace GameL;
 
-CObjBalance::CObjBalance(float x, float y,int p_con)
+CObjBalance::CObjBalance(float x, float y,int p_con,int enemy)
 {
 	m_px = x;
 	m_py = y;
 
 	m_p_con = p_con;
+
+	enemy_num = enemy;
 }
 
 //イニシャライズ
@@ -71,14 +73,14 @@ void CObjBalance::Action()
 		{
 			if (bullet_flag == true && breaktime == 0 && main_R > 0&&boost_flag == false)
 			{
-				CObjNormalBullet* nb = new CObjNormalBullet(m_px + 16.0f, m_py + 16.0f, turn_flag, 0.0f, 2, false);
+				CObjNormalBullet* nb = new CObjNormalBullet(m_px + 16.0f, m_py + 16.0f, turn_flag, 0.0f, 2, false, enemy_num);
 				Objs::InsertObj(nb, OBJ_NORMAL_BULLET, 1);
 				bullet_flag = false;
 				main_R--;
 			}
 			if (bullet_flag == true && breaktime == 0 && boost_flag == true)
 			{
-				CObjNormalBullet* nb = new CObjNormalBullet(m_px + 16.0f, m_py + 16.0f, turn_flag, 0.0f, 3, true);
+				CObjNormalBullet* nb = new CObjNormalBullet(m_px + 16.0f, m_py + 16.0f, turn_flag, 0.0f, 3, true, enemy_num);
 				Objs::InsertObj(nb, OBJ_NORMAL_BULLET, 1);
 				bullet_flag = false;
 			}
@@ -268,9 +270,13 @@ void CObjBalance::Action()
 			m_jump_num += 10;
 			if (gurd_time == false)
 			{
-				CObjAttack* a = new CObjAttack(m_px, m_py, turn_flag, 0.0f, 1);
-				Objs::InsertObj(a, OBJ_ATTACK, 1);
-				gurd_time = true;
+				if (hp > 0)
+				{
+					CObjAttack* a = new CObjAttack(m_px, m_py, turn_flag, 0.0f, 1, 2);
+					Objs::InsertObj(a, OBJ_ATTACK, 1);
+					//gurd_time = true;
+				}
+				
 			}
 			
 		}

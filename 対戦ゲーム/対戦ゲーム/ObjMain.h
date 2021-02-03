@@ -8,7 +8,7 @@ using namespace GameL;
 class CObjMain : public CObj
 {
 public:
-	CObjMain(float x,float y,int p_con);
+	CObjMain(float x,float y,int p_con,int enemy);
 	~CObjMain() {};
 	void Init();   //イニシャライズ
 	void Action(); //アクション
@@ -18,10 +18,11 @@ public:
 	float GetPY() { return m_py; }
 
 	bool GetGurd() { return gurd_flag; }
+	int GetHP() { return hp; }
 
 	void GetDamege(int dam) 
 	{
-		if (gurd_flag == false)
+		
 			hp -= dam;
 	}
 	void GetVX(float x)
@@ -68,4 +69,6 @@ private:
 	int m_p_con;
 
 	bool gurd_time;
+
+	int enemy_num;
 };

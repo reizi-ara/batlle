@@ -96,6 +96,12 @@
     <ClCompile Include="ObjSceneSelect.cpp">
       <Filter>ソース ファイル\Scene</Filter>
     </ClCompile>
+    <ClCompile Include="ObjBreak.cpp">
+      <Filter>ソース ファイル\Main</Filter>
+    </ClCompile>
+    <ClCompile Include="BreakBullet.cpp">
+      <Filter>ソース ファイル\Battle\Bullet</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameHead.h">
@@ -163,6 +169,12 @@
     </ClInclude>
     <ClInclude Include="ObjSceneSelect.h">
       <Filter>ソース ファイル\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjBreak.h">
+      <Filter>ソース ファイル\Main</Filter>
+    </ClInclude>
+    <ClInclude Include="BreakBullet.h">
+      <Filter>ソース ファイル\Battle\Bullet</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

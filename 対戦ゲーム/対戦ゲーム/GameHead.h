@@ -13,6 +13,8 @@ enum OBJ_NAME
 	OBJ_SCENE_MAIN,
 	OBJ_SCENE_SELECT,
 	OBJ_ATTACK,
+	OBJ_BREAK,
+	OBJ_BREAK_BULLET,
 };
 //------------------------------------------------
 
@@ -24,8 +26,13 @@ enum HIT_ELEMENTS
 	//属性は追加可能だが、デバック時の色は初期設定分しか無い
 	ELEMENT_PLAYER,
 	ELEMENT_PLAYER2,
-	ELEMENT_BULLET,
-	ELEMENT_ATTACK,
+	ELEMENT_PLAYER3,
+	ELEMENT_FAST_BULLET,
+	ELEMENT_BREAK_BULLET,
+	ELEMENT_NORMAL_BULLET,
+	ELEMENT_ATTACK1,
+	ELEMENT_ATTACK2,
+	ELEMENT_ATTACK3,
 	ELEMENT_ENEMY,
 	ELEMENT_ITEM,
 	ELEMENT_MAGIC,
@@ -66,6 +73,8 @@ struct UserData
 #include"Attack.h"
 #include"ObjSceneMain.h"
 #include"ObjSceneSelect.h"
+#include"BreakBullet.h"
+#include"ObjBreak.h"
 //------------------------------------------------
 
 //ゲームシーンクラスヘッダ------------------------

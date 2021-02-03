@@ -8,13 +8,14 @@ using namespace GameL;
 class CObjAttack : public CObj
 {
 public:
-	CObjAttack(float x, float y, bool f, float c,int con_num);
+	CObjAttack(float x, float y, bool f, float c, int con_num, int num);
 	~CObjAttack() {};
 	void Init();   //イニシャライズ
 	void Action(); //アクション
 	void Draw();   //ドロー
 
 	void GetPoint() { gurd_point++; }
+	int GetNUM() { return char_num; }
 private:
 
 	float m_px;
@@ -31,4 +32,7 @@ private:
 
 	int gurd_point;
 
+	int char_num;
+
+	int m_hp;
 };

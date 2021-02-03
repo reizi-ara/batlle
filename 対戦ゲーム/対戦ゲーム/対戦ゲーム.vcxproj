@@ -124,6 +124,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Attack.cpp" />
+    <ClCompile Include="BreakBullet.cpp" />
     <ClCompile Include="FastBullet.cpp" />
     <ClCompile Include="GameL\Audio.cpp" />
     <ClCompile Include="GameL\DirectXDevice.cpp" />
@@ -140,6 +141,7 @@
     <ClCompile Include="GameL\WinInputs.cpp" />
     <ClCompile Include="NormalBullet.cpp" />
     <ClCompile Include="ObjBalance.cpp" />
+    <ClCompile Include="ObjBreak.cpp" />
     <ClCompile Include="ObjMain.cpp" />
     <ClCompile Include="ObjSceneMain.cpp" />
     <ClCompile Include="ObjSceneSelect.cpp" />
@@ -148,6 +150,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Attack.h" />
+    <ClInclude Include="BreakBullet.h" />
     <ClInclude Include="FastBullet.h" />
     <ClInclude Include="GameHead.h" />
     <ClInclude Include="GameL\Audio.h" />
@@ -164,6 +167,7 @@
     <ClInclude Include="main.h" />
     <ClInclude Include="NormalBullet.h" />
     <ClInclude Include="ObjBalance.h" />
+    <ClInclude Include="ObjBreak.h" />
     <ClInclude Include="ObjMain.h" />
     <ClInclude Include="ObjSceneMain.h" />
     <ClInclude Include="ObjSceneSelect.h" />

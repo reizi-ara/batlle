@@ -8,7 +8,7 @@ using namespace GameL;
 class CObjFastBullet : public CObj
 {
 public:
-	CObjFastBullet(float x, float y, bool f, float c,int dam);
+	CObjFastBullet(float x, float y, bool f, float c,int dam,int enemy);
 	~CObjFastBullet() {};
 	void Init();   //イニシャライズ
 	void Action(); //アクション
@@ -25,4 +25,6 @@ private:
 	float color;
 
 	int damage;
+
+	int enemy_num;
 };

@@ -11,7 +11,7 @@
 //使用するネームスペース
 using namespace GameL;
 
-CObjNormalBullet::CObjNormalBullet(float x, float y,bool f,float c,int dam,bool hf)
+CObjNormalBullet::CObjNormalBullet(float x, float y,bool f,float c,int dam,bool hf,int enemy)
 {
 	m_px = x;
 	m_py = y;
@@ -21,6 +21,8 @@ CObjNormalBullet::CObjNormalBullet(float x, float y,bool f,float c,int dam,bool 
 
 	damage = dam;
 	h_flag = hf;
+
+	enemy_num = enemy;
 }
 
 //イニシャライズ
@@ -29,14 +31,15 @@ void CObjNormalBullet::Init()
 	m_vx = 0.0f;
 	m_vy = 0.0f;
 
-	Hits::SetHitBox(this, m_px, m_py, 8.0f, 8.0f, ELEMENT_BULLET, OBJ_NORMAL_BULLET, 1);
+	Hits::SetHitBox(this, m_px, m_py, 8.0f, 8.0f, ELEMENT_NORMAL_BULLET, OBJ_NORMAL_BULLET, 1);
 }
 
 //アクション
 void CObjNormalBullet::Action()
 {
 	CHitBox* hit = Hits::GetHitBox(this);
-	CObjMain* m = (CObjMain*)Objs::GetObj(OBJ_MAIN);
+	
+	
 	CObjAttack* a = (CObjAttack*)Objs::GetObj(OBJ_ATTACK);
 
 	if (h_flag == false)
@@ -63,20 +66,46 @@ void CObjNormalBullet::Action()
 	
 	if (hit->CheckElementHit(ELEMENT_PLAYER) == true)
 	{
+		
+		CObjMain* m = (CObjMain*)Objs::GetObj(OBJ_MAIN);
+		m->GetDamege(damage);
 		this->SetStatus(false);
 		Hits::DeleteHitBox(this);
 
-		m->GetDamege(damage);
 		
 	}
-
-	if (hit->CheckElementHit(ELEMENT_ATTACK) == true)
+	if (hit->CheckElementHit(ELEMENT_PLAYER3) == true)
 	{
+		
+		CObjBreak* bb = (CObjBreak*)Objs::GetObj(OBJ_BREAK);
+		bb->GetDamege(damage);
+
 		this->SetStatus(false);
 		Hits::DeleteHitBox(this);
-		if (h_flag == false)
-			m->GetVX(m_vx / 10.0f);
-		a->GetPoint();
+
+	}
+
+	if (enemy_num == 1)
+	{
+		if (hit->CheckElementHit(ELEMENT_ATTACK1) == true)
+		{
+			CObjMain* m = (CObjMain*)Objs::GetObj(OBJ_MAIN);
+			if (h_flag == false)
+				m->GetVX(m_vx / 10.0f);
+			this->SetStatus(false);
+			Hits::DeleteHitBox(this);
+		}
+	}
+	if (enemy_num == 3)
+	{
+		if (hit->CheckElementHit(ELEMENT_ATTACK3) == true)
+		{
+			CObjBreak* bb = (CObjBreak*)Objs::GetObj(OBJ_BREAK);
+			if (h_flag == false)
+				bb->GetVX(m_vx / 10.0f);
+			this->SetStatus(false);
+			Hits::DeleteHitBox(this);
+		}
 	}
 
 	if (m_px + 8.0f >= 800)

@@ -192,6 +192,29 @@ void CObjSceneSelect::Action()
 			}			
 		}
 	}
+	//爆裂タイプ
+	if (m_p1_px >= 600 && m_p1_px + 32.0f <= 800)
+	{
+		if (m_p1_py >= 200 && m_p1_py + 32.0f <= 400)
+		{
+			if (Input::GetConButtons(m_p1_con_num, GAMEPAD_X) == true)
+			{
+				if (m_p2_con != 3)
+					m_p1_con = 3;
+			}
+		}
+	}
+	if (m_p2_px >= 600 && m_p2_px + 32.0f <= 800)
+	{
+		if (m_p2_py >= 200 && m_p2_py + 32.0f <= 400)
+		{
+			if (Input::GetConButtons(m_p2_con_num, GAMEPAD_X) == true)
+			{
+				if (m_p1_con != 3)
+					m_p2_con = 3;
+			}
+		}
+	}
 	if (Input::GetConButtons(m_p1_con_num, GAMEPAD_Y) == true)
 	{
 		if (m_p1_con != 0)
@@ -225,6 +248,7 @@ void CObjSceneSelect::Draw()
 {
 	float w_c[4] = { 1.0f,1.0f,1.0f,1.0f };
 	float r_c[4] = { 1.0f,0.0f,0.0f,1.0f };
+	float b_c[4] = { 0.5f,0.5f,1.0f,1.0f };
 
 	RECT_F src1;
 	RECT_F dst1;
@@ -234,6 +258,8 @@ void CObjSceneSelect::Draw()
 	RECT_F dst3;
 	RECT_F src4;
 	RECT_F dst4;
+	RECT_F src5;
+	RECT_F dst5;
 
 	src1.m_top = 0.0f;
 	src1.m_left = 0.0f;
@@ -255,15 +281,11 @@ void CObjSceneSelect::Draw()
 	src4.m_right = 64.0f;
 	src4.m_bottom = 64.0f;
 
-	dst3.m_top = 200.0f;
-	dst3.m_left = 200.0f;
-	dst3.m_right = 400.0f;
-	dst3.m_bottom = 400.0f;
+	src5.m_top = 0.0f;
+	src5.m_left = 0.0f;
+	src5.m_right = 64.0f;
+	src5.m_bottom = 64.0f;
 
-	dst4.m_top = 200.0f;
-	dst4.m_left = 400.0f;
-	dst4.m_right = 600.0f;
-	dst4.m_bottom = 400.0f;
 
 	dst1.m_top = m_p1_py;
 	dst1.m_left = m_p1_px;
@@ -275,8 +297,24 @@ void CObjSceneSelect::Draw()
 	dst2.m_right = 32.0f + m_p2_px;
 	dst2.m_bottom = 32.0f + m_p2_py;
 
+	dst3.m_top = 200.0f;
+	dst3.m_left = 200.0f;
+	dst3.m_right = 400.0f;
+	dst3.m_bottom = 400.0f;
+
+	dst4.m_top = 200.0f;
+	dst4.m_left = 400.0f;
+	dst4.m_right = 600.0f;
+	dst4.m_bottom = 400.0f;
+
+	dst5.m_top = 200.0f;
+	dst5.m_left = 600.0f;
+	dst5.m_right = 800.0f;
+	dst5.m_bottom = 400.0f;
+
 	Draw::Draw(1, &src3, &dst3, w_c, 0.0f);
 	Draw::Draw(1, &src4, &dst4, r_c, 0.0f);
+	Draw::Draw(1, &src5, &dst5, b_c, 0.0f);
 
 	Draw::Draw(5, &src1, &dst1, w_c, 0.0f);
 	Draw::Draw(5, &src2, &dst2, r_c, 0.0f);
@@ -338,6 +376,33 @@ void CObjSceneSelect::Draw()
 			Font::StrDraw(L"準備完了", 440, 60, 20, w_c);
 		}
 	}
+	if (m_p1_con == 3)
+	{
+		Font::StrDraw(L"1Pは爆裂タイプです", 40, 40, 20, w_c);
+		if (m_p1_battle_flag == false)
+		{
+			Font::StrDraw(L"Press:Yで準備完了", 40, 60, 20, w_c);
+			Font::StrDraw(L"Press:Aでキャンセル", 40, 80, 20, w_c);
+		}
+		if (m_p1_battle_flag == true)
+		{
+			Font::StrDraw(L"準備完了", 40, 60, 20, w_c);
+		}
+	}
+
+	if (m_p2_con == 3)
+	{
+		Font::StrDraw(L"2Pは爆裂タイプです", 440, 40, 20, w_c);
+		if (m_p2_battle_flag == false)
+		{
+			Font::StrDraw(L"Press:Yで準備完了", 440, 60, 20, w_c);
+			Font::StrDraw(L"Press:Aでキャンセル", 440, 80, 20, w_c);
+		}
+		if (m_p2_battle_flag == true)
+		{
+			Font::StrDraw(L"準備完了", 440, 60, 20, w_c);
+		}
+	}
 		
 
 	//砲撃タイプ
@@ -367,6 +432,23 @@ void CObjSceneSelect::Draw()
 		}
 	}
 	if (m_p2_px >= 400 && m_p2_px + 32.0f <= 600)
+	{
+		if (m_p2_py >= 200 && m_p2_py + 32.0f <= 400)
+		{
+			if (m_p2_con == 0)
+				Font::StrDraw(L"Press:X", 440, 40, 20, w_c);
+		}
+	}
+	//爆裂タイプ
+	if (m_p1_px >= 600 && m_p1_px + 32.0f <= 800)
+	{
+		if (m_p1_py >= 200 && m_p1_py + 32.0f <= 400)
+		{
+			if (m_p1_con == 0)
+				Font::StrDraw(L"Press:X", 40, 40, 20, w_c);
+		}
+	}
+	if (m_p2_px >= 600 && m_p2_px + 32.0f <= 800)
 	{
 		if (m_p2_py >= 200 && m_p2_py + 32.0f <= 400)
 		{

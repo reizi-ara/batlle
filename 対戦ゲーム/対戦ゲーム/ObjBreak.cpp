@@ -6,13 +6,13 @@
 #include"GameL/HitBoxManager.h"
 
 
-#include"ObjMain.h"
+#include"ObjBreak.h"
 #include "GameHead.h"
 
 //使用するネームスペース
 using namespace GameL;
 
-CObjMain::CObjMain(float x, float y,int p_con,int enemy)
+CObjBreak::CObjBreak(float x, float y, int p_con, int enemy)
 {
 	m_px = x;
 	m_py = y;
@@ -22,12 +22,12 @@ CObjMain::CObjMain(float x, float y,int p_con,int enemy)
 }
 
 //イニシャライズ
-void CObjMain::Init()
+void CObjBreak::Init()
 {
 	flag = false;
 	m_hit_down = false;
 	button_flag = false;
-	
+
 	m_vx = 0.0f;
 	m_vy = 0.0f;
 	m_jump_num = 0;
@@ -50,12 +50,12 @@ void CObjMain::Init()
 	main_R_time = 0;
 
 	gurd_time = false;
-	
-	Hits::SetHitBox(this, m_px, m_py, 32.0f, 32.0f, ELEMENT_PLAYER, OBJ_BALANCE, 1);
+
+	Hits::SetHitBox(this, m_px, m_py, 32.0f, 32.0f, ELEMENT_PLAYER3, OBJ_BALANCE, 1);
 }
 
 //アクション
-void CObjMain::Action()
+void CObjBreak::Action()
 {
 	CHitBox* hit = Hits::GetHitBox(this);
 	CObjSceneMain* m = (CObjSceneMain*)Objs::GetObj(OBJ_SCENE_MAIN);
@@ -69,41 +69,26 @@ void CObjMain::Action()
 		{
 			if (bullet_flag == true && breaktime == 0 && main_R > 0)
 			{
-				CObjFastBullet* nb = new CObjFastBullet(m_px + 16.0f, m_py + 16.0f, turn_flag, 1.0f, 2, enemy_num);
-				Objs::InsertObj(nb, OBJ_FAST_BULLET, 1);
-				
+				CObjBreakBullet* nb = new CObjBreakBullet(m_px + 16.0f, m_py + 16.0f, turn_flag, 0.5f, 2, false, 0, enemy_num);
+				Objs::InsertObj(nb, OBJ_BREAK_BULLET, 1);
+
 				bullet_flag = false;
 				main_R--;
 			}
 		}
 		else
 			bullet_flag = true;
-		
+
 
 		if (Input::GetConButtons(con_num, GAMEPAD_RIGHT_SHOULDER) == true)
 		{
 			if (sub_bullet_flag == true && breaktime == 0 && sub_R > 0)
 			{
-				for (int i = 0; i < 10; i++)
-				{
-					if (turn_flag == false)
-					{
-						CObjFastBullet* nb = new CObjFastBullet(m_px + 16.0f + (i * 8), m_py + 16.0f, turn_flag, 1.0f, 1, enemy_num);
-						Objs::InsertObj(nb, OBJ_FAST_BULLET, 1);
-						
-						
-					}
-					if (turn_flag == true)
-					{
-						CObjFastBullet* nb = new CObjFastBullet(m_px + 16.0f - (8 * i), m_py + 16.0f, turn_flag, 1.0f, 1, enemy_num);
-						Objs::InsertObj(nb, OBJ_FAST_BULLET, 1);
-						
-						
-					}
-					
-				}
-				sub_R--;
+				CObjBreakBullet* nb = new CObjBreakBullet(m_px + 16.0f, m_py + 16.0f, turn_flag, 0.5f, 2, true, 0, enemy_num);
+				Objs::InsertObj(nb, OBJ_BREAK_BULLET, 1);
+
 				sub_bullet_flag = false;
+				sub_R--;
 			}
 		}
 		else
@@ -235,7 +220,7 @@ void CObjMain::Action()
 			{
 				if (hp > 0)
 				{
-					CObjAttack* a = new CObjAttack(m_px, m_py, turn_flag, 1.0f, 2, 1);
+					CObjAttack* a = new CObjAttack(m_px, m_py, turn_flag, 1.0f, 2, 3);
 					Objs::InsertObj(a, OBJ_ATTACK, 1);
 					//gurd_time = true;
 				}
@@ -295,9 +280,10 @@ void CObjMain::Action()
 }
 
 //ドロー
-void CObjMain::Draw()
+void CObjBreak::Draw()
 {
 	float c[4] = { 1.0f,1.0f,1.0f,1.0f };
+	float b_c[4] = { 0.5f,0.5f,1.0f,1.0f };
 	float bk_c[4] = { 0.0f,0.0f,0.0f,1.0f };
 
 	int gd = 1;
@@ -325,7 +311,7 @@ void CObjMain::Draw()
 	RECT_F dst6;
 	RECT_F src7;
 	RECT_F dst7;
-	
+
 
 	src.m_top = 0.0f;
 	src.m_left = 0.0f;
@@ -347,15 +333,15 @@ void CObjMain::Draw()
 		dst.m_bottom = 32.0f + m_py;
 	}
 
-	Draw::Draw(gd, &src, &dst, c, 0.0f);
+	Draw::Draw(gd, &src, &dst, b_c, 0.0f);
 
 
 	if (m_p_con == 1)
 	{
 
-		
+
 		Font::StrDraw(L"1P", 20, 560, 20, c);
-		
+
 
 		//ゲージ
 		src2.m_top = 0.0f;
@@ -369,8 +355,8 @@ void CObjMain::Draw()
 		dst2.m_right = dst2.m_left + (m_jump_num * 2);
 		dst2.m_bottom = dst2.m_top + 20.0f;
 
-		Draw::Draw(2, &src2, &dst2, c, 0.0f);
-		
+		Draw::Draw(2, &src2, &dst2, b_c, 0.0f);
+
 
 		//ゲージ
 		src3.m_top = 0.0f;
@@ -403,7 +389,7 @@ void CObjMain::Draw()
 		dst4.m_right = dst4.m_left + sub_R * (50 / 3);
 		dst4.m_bottom = dst4.m_top + 20.0f;
 
-		Draw::Draw(2, &src4, &dst4, c, 0.0f);
+		Draw::Draw(2, &src4, &dst4, b_c, 0.0f);
 
 		//ゲージ
 		src5.m_top = 0.0f;
@@ -435,7 +421,7 @@ void CObjMain::Draw()
 		dst6.m_bottom = dst6.m_top + 20.0f;
 
 		//メインゲージ描画
-		Draw::Draw(2, &src6, &dst6, c, 0.0f);
+		Draw::Draw(2, &src6, &dst6, b_c, 0.0f);
 
 		//メインリロードゲージ
 		src7.m_top = 0.0f;
@@ -465,7 +451,7 @@ void CObjMain::Draw()
 	if (m_p_con == 2)
 	{
 
-		
+
 		//2P表記
 		Font::StrDraw(L"2P", 750, 560, 20, c);
 
@@ -483,7 +469,7 @@ void CObjMain::Draw()
 		dst2.m_bottom = dst2.m_top + 20.0f;
 
 		//Boostゲージ描画
-		Draw::Draw(2, &src2, &dst2, c, 0.0f);
+		Draw::Draw(2, &src2, &dst2, b_c, 0.0f);
 
 		//HPゲージ
 		src3.m_top = 0.0f;
@@ -498,7 +484,7 @@ void CObjMain::Draw()
 		dst3.m_bottom = dst3.m_top + 20.0f;
 
 		//HPゲージ描画
-		Draw::Draw(2, &src3, &dst3, c, 0.0f);
+		Draw::Draw(2, &src3, &dst3, b_c, 0.0f);
 
 		//HP表示
 		swprintf_s(str, L"%d", hp);
@@ -517,7 +503,7 @@ void CObjMain::Draw()
 		dst4.m_bottom = dst4.m_top + 20.0f;
 
 		//サブゲージ描画
-		Draw::Draw(2, &src4, &dst4, c, 0.0f);
+		Draw::Draw(2, &src4, &dst4, b_c, 0.0f);
 
 		//サブリロードゲージ
 		src5.m_top = 0.0f;
@@ -533,7 +519,7 @@ void CObjMain::Draw()
 
 		//サブリロードゲージ描画
 		Draw::Draw(2, &src5, &dst5, bk_c, 0.0f);
-		
+
 
 		swprintf_s(str2, L"%d：サブ", sub_R);
 		Font::StrDraw(str2, 600, 10, 20, bk_c);
@@ -551,7 +537,7 @@ void CObjMain::Draw()
 		dst6.m_bottom = dst6.m_top + 20.0f;
 
 		//メインゲージ描画
-		Draw::Draw(2, &src6, &dst6, c, 0.0f);
+		Draw::Draw(2, &src6, &dst6, b_c, 0.0f);
 
 		//メインリロードゲージ
 		src7.m_top = 0.0f;
@@ -580,6 +566,5 @@ void CObjMain::Draw()
 				Font::StrDraw(L"OVERHEAT", 550, 560, 20, bk_c);
 		}
 	}
-	
-}
 
+}
