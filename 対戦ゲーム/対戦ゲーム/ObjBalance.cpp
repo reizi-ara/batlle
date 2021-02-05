@@ -115,34 +115,34 @@ void CObjBalance::Action()
 			if (boost_flag == false)
 			{
 				//ˆÚ“®‘¬“x§Œä
-				if (m_vx > 3.0f)
+				if (m_vx > 5.0f)
 				{
-					m_vx = 3.0f;
+					m_vx = 5.0f;
 				}
-				if (m_vx < -3.0f)
+				if (m_vx < -5.0f)
 				{
-					m_vx = -3.0f;
+					m_vx = -5.0f;
 				}
 			}
 			else if (boost_flag == true)
 			{
 				//ˆÚ“®‘¬“x§Œä
-				if (m_vx > 6.0f)
+				if (m_vx > 8.0f)
 				{
-					m_vx = 6.0f;
+					m_vx = 8.0f;
 				}
-				if (m_vx < -6.0f)
+				if (m_vx < -8.0f)
 				{
-					m_vx = -6.0f;
+					m_vx = -8.0f;
 				}
 				//ˆÚ“®‘¬“x§Œä
-				if (m_vy > 6.0f)
+				if (m_vy > 8.0f)
 				{
-					m_vy = 6.0f;
+					m_vy = 8.0f;
 				}
-				if (m_vy < -6.0f)
+				if (m_vy < -8.0f)
 				{
-					m_vy = -6.0f;
+					m_vy = -8.0f;
 				}
 			}
 			

@@ -103,13 +103,13 @@ void CObjBreak::Action()
 		if (breaktime == 0)
 		{
 			//ˆÚ“®‘¬“x§Œä
-			if (m_vx > 3.0f)
+			if (m_vx > 5.0f)
 			{
-				m_vx = 3.0f;
+				m_vx = 5.0f;
 			}
-			if (m_vx < -3.0f)
+			if (m_vx < -5.0f)
 			{
-				m_vx = -3.0f;
+				m_vx = -5.0f;
 			}
 		}
 

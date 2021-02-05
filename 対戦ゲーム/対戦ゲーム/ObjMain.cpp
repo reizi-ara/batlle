@@ -88,7 +88,7 @@ void CObjMain::Action()
 			if (breaktime == 0)
 			{
 				bullet_time++;
-				if (bullet_time >= 30)
+				if (bullet_time >= 60)
 				{
 					if (bullet_num < 30)
 						bullet_num += 5;
@@ -196,13 +196,13 @@ void CObjMain::Action()
 		if (breaktime == 0)
 		{
 			//ˆÚ“®‘¬“x§Œä
-			if (m_vx > 3.0f)
+			if (m_vx > 5.0f)
 			{
-				m_vx = 3.0f;
+				m_vx = 5.0f;
 			}
-			if (m_vx < -3.0f)
+			if (m_vx < -5.0f)
 			{
-				m_vx = -3.0f;
+				m_vx = -5.0f;
 			}
 		}
 
@@ -214,7 +214,7 @@ void CObjMain::Action()
 			m_hit_down = false;
 			if (m_hit_down == false && m_jump_num < 50)
 			{
-				m_vy = -9.0f;
+				m_vy = -7.0f;
 				m_jump_num += 1;
 			}
 			button_flag = false;
