@@ -28,6 +28,8 @@ public:
 		m_px += x;
 	}
 	void GetJump() { m_jump_num = 50; }
+
+	bool GetBreak() { return break_flag; }
 private:
 
 	float m_px;
@@ -69,4 +71,8 @@ private:
 	bool gurd_time;
 
 	int enemy_num;
+
+	bool break_flag;
+
+	bool bust_draw_flag;
 };

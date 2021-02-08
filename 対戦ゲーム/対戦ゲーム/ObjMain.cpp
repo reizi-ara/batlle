@@ -4,6 +4,7 @@
 #include"GameL/SceneManager.h"
 #include"GameL/DrawFont.h"
 #include"GameL/HitBoxManager.h"
+#include"GameL/Audio.h"
 
 
 #include"ObjMain.h"
@@ -53,6 +54,8 @@ void CObjMain::Init()
 
 	bullet_num = 0;
 	bullet_time = 0;
+
+	bust_draw_flag = false;
 	
 	Hits::SetHitBox(this, m_px, m_py, 32.0f, 32.0f, ELEMENT_PLAYER, OBJ_BALANCE, 1);
 }
@@ -74,6 +77,8 @@ void CObjMain::Action()
 			{
 				CObjFastBullet* nb = new CObjFastBullet(m_px + 16.0f, m_py + 16.0f, turn_flag, 1.0f, 2, enemy_num, 0);
 				Objs::InsertObj(nb, OBJ_FAST_BULLET, 1);
+
+				Audio::Start(2);
 				
 				bullet_flag = false;
 				main_R--;
@@ -117,6 +122,7 @@ void CObjMain::Action()
 								Objs::InsertObj(nb, OBJ_FAST_BULLET, 1);
 							}
 						}
+						Audio::Start(6);
 						
 						bullet_time = 0;
 						bullet_num = 0;
@@ -172,6 +178,7 @@ void CObjMain::Action()
 								Objs::InsertObj(nb, OBJ_FAST_BULLET, 1);
 							}
 						}
+						Audio::Start(6);
 						bullet_time = 0;
 						bullet_num = 0;
 					}
@@ -216,11 +223,21 @@ void CObjMain::Action()
 			{
 				m_vy = -7.0f;
 				m_jump_num += 1;
+
+				bust_draw_flag = true;
+			}
+			else
+			{
+				bust_draw_flag = false;
 			}
 			button_flag = false;
 		}
 		else
+		{
 			button_flag = true;
+			bust_draw_flag = false;
+		}
+			
 
 		//–€ŽC
 		if (Input::GetConVecStickLX(con_num) == 0.0f && breaktime == 0)
@@ -405,11 +422,13 @@ void CObjMain::Draw()
 	RECT_F src7;
 	RECT_F dst7;
 	
+	
 
 	src.m_top = 0.0f;
 	src.m_left = 0.0f;
 	src.m_right = 64.0f;
 	src.m_bottom = 64.0f;
+
 
 	if (turn_flag == false)
 	{
@@ -427,6 +446,22 @@ void CObjMain::Draw()
 	}
 
 	Draw::Draw(gd, &src, &dst, c, 0.0f);
+
+	RECT_F src8;
+	RECT_F dst8;
+
+	src8.m_top = 0.0f;
+	src8.m_left = 0.0f;
+	src8.m_right = 64.0f;
+	src8.m_bottom = 64.0f;
+
+	dst8.m_top = 32.0f + m_py;
+	dst8.m_left = m_px;
+	dst8.m_right = 32.0f + m_px;
+	dst8.m_bottom = 64.0f + m_py;
+
+	if (bust_draw_flag == true)
+		Draw::Draw(7, &src8, &dst8, c, 0.0f);
 
 
 	if (m_p_con == 1)

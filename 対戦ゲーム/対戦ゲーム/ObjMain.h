@@ -75,4 +75,6 @@ private:
 	int bullet_time;
 
 	int bullet_num;
+
+	bool bust_draw_flag;
 };

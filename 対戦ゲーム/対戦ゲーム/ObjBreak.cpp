@@ -4,6 +4,7 @@
 #include"GameL/SceneManager.h"
 #include"GameL/DrawFont.h"
 #include"GameL/HitBoxManager.h"
+#include"GameL/Audio.h"
 
 
 #include"ObjBreak.h"
@@ -51,6 +52,10 @@ void CObjBreak::Init()
 
 	gurd_time = false;
 
+	break_flag = false;
+
+	bust_draw_flag = false;
+
 	Hits::SetHitBox(this, m_px, m_py, 32.0f, 32.0f, ELEMENT_PLAYER3, OBJ_BALANCE, 1);
 }
 
@@ -71,6 +76,8 @@ void CObjBreak::Action()
 			{
 				CObjBreakBullet* nb = new CObjBreakBullet(m_px + 16.0f, m_py + 16.0f, turn_flag, 0.5f, 2, false, 0, enemy_num);
 				Objs::InsertObj(nb, OBJ_BREAK_BULLET, 1);
+
+				Audio::Start(2);
 
 				bullet_flag = false;
 				main_R--;
@@ -123,11 +130,19 @@ void CObjBreak::Action()
 			{
 				m_vy = -9.0f;
 				m_jump_num += 1;
+				bust_draw_flag = true;
+			}
+			else
+			{
+				bust_draw_flag = false;
 			}
 			button_flag = false;
 		}
 		else
+		{
 			button_flag = true;
+			bust_draw_flag = false;
+		}
 
 		//摩擦
 		if (Input::GetConVecStickLX(con_num) == 0.0f && breaktime == 0)
@@ -196,6 +211,14 @@ void CObjBreak::Action()
 	}
 	//--------------------------------------
 
+	/*if (Input::GetConButtons(con_num, GAMEPAD_B) == true)
+	{
+		break_flag = true;
+	}
+	else
+	{
+		break_flag = false;
+	}*/
 
 	//ガードをしていないとき
 	/*if (Input::GetConButtons(con_num, GAMEPAD_LEFT_SHOULDER) == false)
@@ -277,6 +300,8 @@ void CObjBreak::Action()
 		main_R = 10;
 		main_R_time = 0;
 	}
+
+	
 }
 
 //ドロー
@@ -285,6 +310,7 @@ void CObjBreak::Draw()
 	float c[4] = { 1.0f,1.0f,1.0f,1.0f };
 	float b_c[4] = { 0.5f,0.5f,1.0f,1.0f };
 	float bk_c[4] = { 0.0f,0.0f,0.0f,1.0f };
+	float wt_c[4] = { 1.0f,1.0f,1.0f,1.0f };
 
 	int gd = 1;
 
@@ -334,6 +360,22 @@ void CObjBreak::Draw()
 	}
 
 	Draw::Draw(gd, &src, &dst, b_c, 0.0f);
+
+	RECT_F src8;
+	RECT_F dst8;
+
+	src8.m_top = 0.0f;
+	src8.m_left = 0.0f;
+	src8.m_right = 64.0f;
+	src8.m_bottom = 64.0f;
+
+	dst8.m_top = 32.0f + m_py;
+	dst8.m_left = m_px;
+	dst8.m_right = 32.0f + m_px;
+	dst8.m_bottom = 64.0f + m_py;
+
+	if (bust_draw_flag == true)
+		Draw::Draw(7, &src8, &dst8, wt_c, 0.0f);
 
 
 	if (m_p_con == 1)

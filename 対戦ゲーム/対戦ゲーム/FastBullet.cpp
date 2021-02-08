@@ -4,6 +4,7 @@
 #include"GameL/SceneManager.h"
 #include"GameL/DrawFont.h"
 #include"GameL/HitBoxManager.h"
+#include"GameL/Audio.h"
 
 #include "FastBullet.h"
 #include "GameHead.h"
@@ -33,6 +34,8 @@ void CObjFastBullet::Init()
 	m_vy = 0.0f;
 
 	turn_time = 0.0f;
+
+	Audio_time = 0;
 
 	Hits::SetHitBox(this, m_px, m_py, 8.0f, 8.0f, ELEMENT_FAST_BULLET, OBJ_FAST_BULLET, 1);
 }
@@ -148,18 +151,40 @@ void CObjFastBullet::Action()
 		{
 			CObjBalance* b = (CObjBalance*)Objs::GetObj(OBJ_BALANCE);
 			b->GetVX(m_vx / 10.0f);
+
+			if (Audio_time < 1)
+			{
+				Audio::Start(7);
+				Audio_time++;
+			}
 			this->SetStatus(false);
 			Hits::DeleteHitBox(this);
+		}
+		else
+		{
+			Audio_time = 0;
 		}
 	}
 	if (enemy_num== 3)
 	{
 		if (hit->CheckElementHit(ELEMENT_ATTACK3) == true)
 		{
+			if (Audio_time < 1)
+			{
+				Audio::Start(7);
+				Audio_time++;
+			}
+
 			CObjBreak* bb = (CObjBreak*)Objs::GetObj(OBJ_BREAK);
 			bb->GetVX(m_vx / 10.0f);
+
+			//Audio::Start(7);
 			this->SetStatus(false);
 			Hits::DeleteHitBox(this);
+		}
+		else
+		{
+			Audio_time = 0;
 		}
 	}
 

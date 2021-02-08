@@ -4,6 +4,7 @@
 #include"GameL/SceneManager.h"
 #include"GameL/DrawFont.h"
 #include"GameL/HitBoxManager.h"
+#include"GameL/Audio.h"
 
 
 #include"ObjSceneMain.h"
@@ -23,6 +24,8 @@ void CObjSceneMain::Init()
 	victory_flag = 0;
 	con1_num = 0;
 	con2_num = 0;
+	
+	
 }
 
 //ƒAƒNƒVƒ‡ƒ“
@@ -30,6 +33,8 @@ void CObjSceneMain::Action()
 {
 		con1_num = Input::UpdateXControlerConnected();
 		con2_num = Input::UpdateXControlerConnected() - 1;
+		
+		
 	if (victory_flag != 0)
 	{
 		if (Input::GetConButtons(con1_num, GAMEPAD_B) == true || Input::GetConButtons(con2_num, GAMEPAD_B) == true)

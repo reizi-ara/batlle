@@ -4,6 +4,7 @@
 #include"GameL/SceneManager.h"
 #include"GameL/DrawFont.h"
 #include"GameL/HitBoxManager.h"
+#include"GameL/Audio.h"
 
 #include"ObjBalance.h"
 #include "GameHead.h"
@@ -53,6 +54,8 @@ void CObjBalance::Init()
 
 	gurd_time = false;
 
+	bust_draw_flag = false;
+
 	Hits::SetHitBox(this, m_px, m_py, 32.0f, 32.0f, ELEMENT_PLAYER2, OBJ_BALANCE, 1);
 }
 
@@ -75,6 +78,7 @@ void CObjBalance::Action()
 			{
 				CObjNormalBullet* nb = new CObjNormalBullet(m_px + 16.0f, m_py + 16.0f, turn_flag, 0.0f, 2, false, enemy_num, 0);
 				Objs::InsertObj(nb, OBJ_NORMAL_BULLET, 1);
+				Audio::Start(2);
 				bullet_flag = false;
 				main_R--;
 			}
@@ -84,7 +88,9 @@ void CObjBalance::Action()
 				{
 					CObjNormalBullet* nb = new CObjNormalBullet(m_px + 16.0f, m_py + 16.0f, turn_flag, 0.0f, 2, true, enemy_num, i);
 					Objs::InsertObj(nb, OBJ_NORMAL_BULLET, 1);
+					
 				}
+				Audio::Start(2);
 				bullet_flag = false;
 			}
 		}
@@ -93,6 +99,13 @@ void CObjBalance::Action()
 
 		if (Input::GetConButtons(con_num, GAMEPAD_RIGHT_SHOULDER) == true && boost_flag == false && breaktime == 0 && sub_R > 0&&m_jump_num<500)
 		{
+			if (Audio_time == 0)
+			{
+				Audio::Start(5);
+				Audio_time++;
+			}
+				
+			
 			m_vy = -9.0f;
 			boost_flag = true;
 			sub_R--;
@@ -151,7 +164,10 @@ void CObjBalance::Action()
 		//ジャンプ処理
 		if (Input::GetConButtons(con_num, GAMEPAD_A) == true && breaktime == 0)
 		{
+			Audio_time = 0;
 			boost_flag = false;
+
+			Audio::Stop(5);
 			/*if (m_hit_down == true)
 				m_vy = -12.0f;*/
 			m_hit_down = false;
@@ -159,13 +175,21 @@ void CObjBalance::Action()
 			{
 				if (boost_flag == false)
 					m_vy = -9.0f;
-
+				bust_draw_flag = true;
 				m_jump_num += 10;
+			}
+			else
+			{
+				bust_draw_flag = false;
 			}
 			button_flag = false;
 		}
 		else
+		{
 			button_flag = true;
+			bust_draw_flag = false;
+		}
+			
 
 		//摩擦
 		if (Input::GetConVecStickLX(con_num) == 0.0f && breaktime == 0)
@@ -200,6 +224,8 @@ void CObjBalance::Action()
 	}
 	if (m_jump_num >= 500)
 	{
+		Audio_time = 0;
+		Audio::Stop(5);
 		m_vx = 0.0f;
 		boost_flag = false;
 	}
@@ -222,6 +248,8 @@ void CObjBalance::Action()
 	{
 		m_hit_down = true;
 		m_py = 536.0f - 32.0f;
+		Audio_time = 0;
+		Audio::Stop(5);
 		boost_flag = false;
 		if (gurd_flag == false && breaktime == 20)
 		{
@@ -334,6 +362,7 @@ void CObjBalance::Action()
 void CObjBalance::Draw()
 {
 	float c[4] = { 1.0f,0.0f,0.0f,1.0f };
+	float wt_c[4] = { 1.0f,1.0f,1.0f,1.0f };
 	float b_c[4] = { 1.0f,0.0f,1.0f,1.0f };
 	float bk_c[4] = { 0.0f,0.0f,0.0f,1.0f };
 	int gd = 1;
@@ -396,6 +425,24 @@ void CObjBalance::Draw()
 		//バランスタイプ描画
 		Draw::Draw(gd, &src, &dst, b_c, 0.0f);
 	}
+
+
+	RECT_F src8;
+	RECT_F dst8;
+
+	src8.m_top = 0.0f;
+	src8.m_left = 0.0f;
+	src8.m_right = 64.0f;
+	src8.m_bottom = 64.0f;
+
+	dst8.m_top = 32.0f + m_py;
+	dst8.m_left = m_px;
+	dst8.m_right = 32.0f + m_px;
+	dst8.m_bottom = 64.0f + m_py;
+
+	if (bust_draw_flag == true)
+		Draw::Draw(7, &src8, &dst8, wt_c, 0.0f);
+
 	if (m_p_con == 1)
 	{
 		Font::StrDraw(L"1P", 20, 560, 20, c);

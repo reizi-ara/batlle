@@ -70,4 +70,8 @@ private:
 	bool gurd_time;
 
 	int enemy_num;
+
+	int Audio_time;
+
+	bool bust_draw_flag;
 };

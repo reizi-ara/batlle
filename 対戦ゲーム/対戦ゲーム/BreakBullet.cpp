@@ -4,6 +4,7 @@
 #include"GameL/SceneManager.h"
 #include"GameL/DrawFont.h"
 #include"GameL/HitBoxManager.h"
+#include"GameL/Audio.h"
 
 #include "BreakBullet.h"
 #include "GameHead.h"
@@ -37,6 +38,7 @@ void CObjBreakBullet::Init()
 	break_time = 0;
 
 	turn_time = 0.0f;
+
 
 	Hits::SetHitBox(this, m_px, m_py, 8.0f, 8.0f, ELEMENT_BREAK_BULLET, OBJ_FAST_BULLET, 1);
 }
@@ -86,6 +88,8 @@ void CObjBreakBullet::Action()
 			{
 				m_vx = -10.0f;
 				m_vy = 0.0f;
+				
+				Audio::Start(3);
 				break;
 			}
 			case 2:
@@ -185,6 +189,8 @@ void CObjBreakBullet::Action()
 	{
 		m_vx = 0;
 		break_time++;
+		//CObjBreak* b = (CObjBreak*)Objs::GetObj(OBJ_BREAK);
+
 		if (break_time >= 60)
 		{
 			break_time = 0;
@@ -193,6 +199,7 @@ void CObjBreakBullet::Action()
 				CObjBreakBullet* nb = new CObjBreakBullet(m_px, m_py, turn_flag, 0.5f, 2, false, i, enemy_num);
 				Objs::InsertObj(nb, OBJ_BREAK_BULLET, 1);
 			}
+			
 			this->SetStatus(false);
 			Hits::DeleteHitBox(this);
 		}
@@ -229,6 +236,8 @@ void CObjBreakBullet::Action()
 		{
 			CObjMain* m = (CObjMain*)Objs::GetObj(OBJ_MAIN);
 			m->GetVX(m_vx / 10.0f);
+
+			Audio::Start(7);
 			this->SetStatus(false);
 			Hits::DeleteHitBox(this);
 		}
@@ -240,6 +249,8 @@ void CObjBreakBullet::Action()
 		{
 			CObjBalance* b = (CObjBalance*)Objs::GetObj(OBJ_BALANCE);
 			b->GetVX(m_vx / 10.0f);
+
+			Audio::Start(7);
 			this->SetStatus(false);
 			Hits::DeleteHitBox(this);
 		}

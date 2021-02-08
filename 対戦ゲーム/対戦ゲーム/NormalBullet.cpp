@@ -4,6 +4,7 @@
 #include"GameL/SceneManager.h"
 #include"GameL/DrawFont.h"
 #include"GameL/HitBoxManager.h"
+#include"GameL/Audio.h"
 
 #include "NormalBullet.h"
 #include "GameHead.h"
@@ -34,6 +35,8 @@ void CObjNormalBullet::Init()
 	m_vy = 0.0f;
 
 	turn_time = 0.0f;
+
+	
 
 	Hits::SetHitBox(this, m_px, m_py, 8.0f, 8.0f, ELEMENT_NORMAL_BULLET, OBJ_NORMAL_BULLET, 1);
 }
@@ -123,7 +126,10 @@ void CObjNormalBullet::Action()
 		{
 			CObjMain* m = (CObjMain*)Objs::GetObj(OBJ_MAIN);
 			if (h_flag == false)
+			{
 				m->GetVX(m_vx / 10.0f);
+				Audio::Start(7);
+			}
 			this->SetStatus(false);
 			Hits::DeleteHitBox(this);
 		}
@@ -134,7 +140,10 @@ void CObjNormalBullet::Action()
 		{
 			CObjBreak* bb = (CObjBreak*)Objs::GetObj(OBJ_BREAK);
 			if (h_flag == false)
+			{
 				bb->GetVX(m_vx / 10.0f);
+				Audio::Start(7);
+			}
 			this->SetStatus(false);
 			Hits::DeleteHitBox(this);
 		}

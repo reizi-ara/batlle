@@ -6,6 +6,7 @@
 #include "GameL/SceneObjManager.h"
 #include "GameL/DrawFont.h"
 #include"GameL\DrawTexture.h"
+#include"GameL/Audio.h"
 
 //使用するネームスペース
 using namespace GameL;
@@ -29,15 +30,18 @@ SceneSelect::~SceneSelect()
 //セレクトタイトル初期化メソッド
 void SceneSelect::InitScene()
 {
-	Draw::LoadImage(L"白.png", 1, TEX_SIZE_512);
-	Draw::LoadImage(L"白ボックス.png", 2, TEX_SIZE_512);
-	Draw::LoadImage(L"ステージ.png", 3, TEX_SIZE_512);
-	Draw::LoadImage(L"HPゲージ.png", 4, TEX_SIZE_512);
-	Draw::LoadImage(L"ブーストゲージ.png", 5, TEX_SIZE_512);
-	Draw::LoadImage(L"セレクトカーソル.png", 5, TEX_SIZE_512);
+	Draw::LoadImage(L"画像/白.png", 1, TEX_SIZE_512);
+	Draw::LoadImage(L"画像/白ボックス.png", 2, TEX_SIZE_512);
+	Draw::LoadImage(L"画像/ステージ.png", 3, TEX_SIZE_512);
+	Draw::LoadImage(L"画像/HPゲージ.png", 4, TEX_SIZE_512);
+	Draw::LoadImage(L"画像/ブーストゲージ.png", 5, TEX_SIZE_512);
+	Draw::LoadImage(L"画像/セレクトカーソル.png", 5, TEX_SIZE_512);
+	Audio::LoadAudio(1, L"BGM/セレクト.wav", BACK_MUSIC);
 
 	CObjSceneSelect* ss = new CObjSceneSelect();
 	Objs::InsertObj(ss, OBJ_SCENE_SELECT, 1);
+
+	Audio::Start(1);
 }
 
 //ゲームタイトル実行メソッド

@@ -30,4 +30,6 @@ private:
 
 	float turn_time;
 	int bullet_num;
+
+	int Audio_time;
 };
