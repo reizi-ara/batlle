@@ -15,6 +15,7 @@ enum OBJ_NAME
 	OBJ_ATTACK,
 	OBJ_BREAK,
 	OBJ_BREAK_BULLET,
+	OBJ_SCENE_TITLE,
 };
 //------------------------------------------------
 
@@ -75,14 +76,16 @@ struct UserData
 #include"ObjSceneSelect.h"
 #include"BreakBullet.h"
 #include"ObjBreak.h"
+#include"ObjSceneTitle.h"
 //------------------------------------------------
 
 //ゲームシーンクラスヘッダ------------------------
 #include "SceneMain.h"
 #include"SceneSelect.h"
+#include"SceneTitle.h"
 //-----------------------------------------------
 
 //シーンスタートクラス---------------------------
 //ゲーム開始時のシーンクラス登録
-#define SET_GAME_START SceneSelect  
+#define SET_GAME_START SceneTitle  
 //-----------------------------------------------

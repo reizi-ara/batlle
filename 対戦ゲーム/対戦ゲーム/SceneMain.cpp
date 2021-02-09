@@ -38,6 +38,7 @@ void SceneMain::InitScene()
 	Draw::LoadImage(L"画像/ブーストゲージ.png", 5, TEX_SIZE_512);
 	Draw::LoadImage(L"画像/白防御.png", 6, TEX_SIZE_512);
 	Draw::LoadImage(L"画像/ブースト.png", 7, TEX_SIZE_512);
+	Draw::LoadImage(L"画像/コントローラー.png", 8, TEX_SIZE_512);
 	Audio::LoadAudio(1, L"BGM/セレクト.wav", BACK_MUSIC);
 	Audio::LoadAudio(8, L"BGM/戦闘シーン.wav", BACK_MUSIC);
 	Audio::LoadAudio(2, L"SE/銃.wav", EFFECT);
@@ -100,6 +101,7 @@ void SceneMain::InitScene()
 	
 	Audio::Start(8);
 	Audio::Volume(-0.4f, 2);
+	Audio::Volume(-0.2f, 4);
 	Audio::Volume(-0.8f, 8);
 	Audio::Volume(-0.9f, 3);
 	Audio::Volume(-0.5f, 5);

@@ -214,6 +214,7 @@ void CObjBreakBullet::Action()
 		
 		CObjBalance* b = (CObjBalance*)Objs::GetObj(OBJ_BALANCE);
 		b->GetDamege(damage);
+		Audio::Start(4);
 
 		this->SetStatus(false);
 		Hits::DeleteHitBox(this);
@@ -226,6 +227,7 @@ void CObjBreakBullet::Action()
 		CObjMain* m = (CObjMain*)Objs::GetObj(OBJ_MAIN);
 		m->GetDamege(damage);
 
+		Audio::Start(4);
 		this->SetStatus(false);
 		Hits::DeleteHitBox(this);
 	}

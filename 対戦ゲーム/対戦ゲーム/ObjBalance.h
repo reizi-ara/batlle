@@ -74,4 +74,6 @@ private:
 	int Audio_time;
 
 	bool bust_draw_flag;
+
+	int bullet_time;
 };

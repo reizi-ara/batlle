@@ -382,7 +382,7 @@ void CObjBreak::Draw()
 	{
 
 
-		Font::StrDraw(L"1P", 20, 560, 20, c);
+		Font::StrDraw(L"1P", 20, 560, 20, b_c);
 
 
 		//ゲージ
@@ -413,7 +413,7 @@ void CObjBreak::Draw()
 		dst3.m_bottom = dst3.m_top + 20.0f;
 
 
-		Draw::Draw(2, &src3, &dst3, c, 0.0f);
+		Draw::Draw(2, &src3, &dst3, b_c, 0.0f);
 
 		swprintf_s(str, L"%d", hp);
 		Font::StrDraw(str, 60, 560, 20, bk_c);
@@ -495,7 +495,7 @@ void CObjBreak::Draw()
 
 
 		//2P表記
-		Font::StrDraw(L"2P", 750, 560, 20, c);
+		Font::StrDraw(L"2P", 750, 560, 20, b_c);
 
 
 		//Boostゲージ

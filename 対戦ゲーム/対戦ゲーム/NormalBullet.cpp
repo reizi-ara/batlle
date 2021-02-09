@@ -104,6 +104,8 @@ void CObjNormalBullet::Action()
 		
 		CObjMain* m = (CObjMain*)Objs::GetObj(OBJ_MAIN);
 		m->GetDamege(damage);
+
+		Audio::Start(4);
 		this->SetStatus(false);
 		Hits::DeleteHitBox(this);
 
@@ -114,6 +116,7 @@ void CObjNormalBullet::Action()
 		
 		CObjBreak* bb = (CObjBreak*)Objs::GetObj(OBJ_BREAK);
 		bb->GetDamege(damage);
+		Audio::Start(4);
 
 		this->SetStatus(false);
 		Hits::DeleteHitBox(this);

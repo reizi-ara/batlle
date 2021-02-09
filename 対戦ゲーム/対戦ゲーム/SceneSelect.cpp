@@ -36,6 +36,7 @@ void SceneSelect::InitScene()
 	Draw::LoadImage(L"画像/HPゲージ.png", 4, TEX_SIZE_512);
 	Draw::LoadImage(L"画像/ブーストゲージ.png", 5, TEX_SIZE_512);
 	Draw::LoadImage(L"画像/セレクトカーソル.png", 5, TEX_SIZE_512);
+	Draw::LoadImage(L"画像/コントローラー.png", 8, TEX_SIZE_512);
 	Audio::LoadAudio(1, L"BGM/セレクト.wav", BACK_MUSIC);
 
 	CObjSceneSelect* ss = new CObjSceneSelect();

@@ -56,6 +56,8 @@ void CObjBalance::Init()
 
 	bust_draw_flag = false;
 
+	bullet_time = 0;
+
 	Hits::SetHitBox(this, m_px, m_py, 32.0f, 32.0f, ELEMENT_PLAYER2, OBJ_BALANCE, 1);
 }
 
@@ -82,7 +84,7 @@ void CObjBalance::Action()
 				bullet_flag = false;
 				main_R--;
 			}
-			if (bullet_flag == true && breaktime == 0 && boost_flag == true)
+			/*if (bullet_flag == true && breaktime == 0 && boost_flag == true)
 			{
 				for (int i = 0; i < 2; i++)
 				{
@@ -92,7 +94,7 @@ void CObjBalance::Action()
 				}
 				Audio::Start(2);
 				bullet_flag = false;
-			}
+			}*/
 		}
 		else
 			bullet_flag = true;
@@ -110,7 +112,23 @@ void CObjBalance::Action()
 			boost_flag = true;
 			sub_R--;
 		}
-		
+		if (boost_flag == true)
+		{
+			bullet_time++;
+			if (bullet_time >= 10)
+			{
+				for (int i = 0; i < 2; i++)
+				{
+					CObjNormalBullet* nb = new CObjNormalBullet(m_px + 16.0f, m_py + 16.0f, turn_flag, 0.0f, 2, true, enemy_num, i);
+					Objs::InsertObj(nb, OBJ_NORMAL_BULLET, 1);
+				}
+				bullet_time = 0;
+			}
+		}
+		else
+		{
+			bullet_time = 0;
+		}
 
 		if (breaktime == 0)
 		{

@@ -128,6 +128,7 @@ void CObjFastBullet::Action()
 
 		CObjBalance* b = (CObjBalance*)Objs::GetObj(OBJ_BALANCE);
 		b->GetDamege(damage);
+		Audio::Start(4);
 
 		this->SetStatus(false);
 		Hits::DeleteHitBox(this);
@@ -138,6 +139,7 @@ void CObjFastBullet::Action()
 		
 		CObjBreak* bb = (CObjBreak*)Objs::GetObj(OBJ_BREAK);
 		bb->GetDamege(damage);
+		Audio::Start(4);
 
 		this->SetStatus(false);
 		Hits::DeleteHitBox(this);
