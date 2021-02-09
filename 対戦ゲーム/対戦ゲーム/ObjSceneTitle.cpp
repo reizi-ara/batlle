@@ -35,6 +35,11 @@ void CObjSceneTitle::Action()
 	{
 		Scene::SetScene(new SceneSelect());
 	}
+	//エクストラキー（デバッグ用）
+	if (Input::GetVKey(VK_RETURN) == true)
+	{
+		Scene::SetScene(new SceneSelect());
+	}
 }
 
 //ドロー

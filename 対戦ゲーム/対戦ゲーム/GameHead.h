@@ -16,6 +16,7 @@ enum OBJ_NAME
 	OBJ_BREAK,
 	OBJ_BREAK_BULLET,
 	OBJ_SCENE_TITLE,
+	OBJ_SCENE_MANUAL,
 };
 //------------------------------------------------
 
@@ -77,12 +78,14 @@ struct UserData
 #include"BreakBullet.h"
 #include"ObjBreak.h"
 #include"ObjSceneTitle.h"
+#include"ObjSceneManual.h"
 //------------------------------------------------
 
 //ゲームシーンクラスヘッダ------------------------
 #include "SceneMain.h"
 #include"SceneSelect.h"
 #include"SceneTitle.h"
+#include"SceneManual.h"
 //-----------------------------------------------
 
 //シーンスタートクラス---------------------------

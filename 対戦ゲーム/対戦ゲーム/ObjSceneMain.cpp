@@ -25,7 +25,9 @@ void CObjSceneMain::Init()
 	con1_num = 0;
 	con2_num = 0;
 	
-	
+	Battle_flag = false;
+
+	m_time = 0;
 }
 
 //アクション
@@ -34,7 +36,13 @@ void CObjSceneMain::Action()
 		con1_num = Input::UpdateXControlerConnected();
 		con2_num = Input::UpdateXControlerConnected() - 1;
 		
-		
+		if (m_time < 240)
+			m_time++;
+
+		if (m_time >= 240)
+		{
+			Battle_flag = true;
+		}
 	if (victory_flag != 0)
 	{
 		if (Input::GetConButtons(con1_num, GAMEPAD_B) == true || Input::GetConButtons(con2_num, GAMEPAD_B) == true)
@@ -43,6 +51,10 @@ void CObjSceneMain::Action()
 		}
 	}
 
+	if (Input::GetVKey('V') == true)
+	{
+		Scene::SetScene(new SceneSelect());
+	}
 }
 
 //ドロー
@@ -146,6 +158,23 @@ void CObjSceneMain::Draw()
 	{
 		Font::StrDraw(L"WIN2P", 337.5f, 250, 50, c);
 		Font::StrDraw(L"Press:B", 317.5f, 350, 50, c);
+	}
+
+	if (m_time > 0 && m_time < 60)
+	{
+		Font::StrDraw(L"3", 375, 250, 100, c);
+	}
+	if (m_time > 60 && m_time < 120)
+	{
+		Font::StrDraw(L"2", 375, 250, 100, c);
+	}
+	if (m_time > 120 && m_time < 180)
+	{
+		Font::StrDraw(L"1", 375, 250, 100, c);
+	}
+	if (m_time > 180 && m_time < 240)
+	{
+		Font::StrDraw(L"GO!!", 300, 250, 100, c);
 	}
 		
 }

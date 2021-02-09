@@ -13,9 +13,6 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="ソース ファイル\Scene">
-      <UniqueIdentifier>{17fd6a98-b1fe-454c-90e0-f21bd7f9bca8}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ソース ファイル\Main">
       <UniqueIdentifier>{5f96e136-9cdc-4dc8-b29e-e1749d4287be}</UniqueIdentifier>
     </Filter>
@@ -27,6 +24,12 @@
     </Filter>
     <Filter Include="ソース ファイル\Battle\Attack">
       <UniqueIdentifier>{e18eea29-1bce-4895-86de-b8f8cc33312d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Scene">
+      <UniqueIdentifier>{17fd6a98-b1fe-454c-90e0-f21bd7f9bca8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\シーンオブジェクト">
+      <UniqueIdentifier>{50f72c2a-425b-4861-81e2-209a26021cf7}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -87,13 +90,7 @@
     <ClCompile Include="Attack.cpp">
       <Filter>ソース ファイル\Battle\Attack</Filter>
     </ClCompile>
-    <ClCompile Include="ObjSceneMain.cpp">
-      <Filter>ソース ファイル\Scene</Filter>
-    </ClCompile>
     <ClCompile Include="SceneSelect.cpp">
-      <Filter>ソース ファイル\Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="ObjSceneSelect.cpp">
       <Filter>ソース ファイル\Scene</Filter>
     </ClCompile>
     <ClCompile Include="ObjBreak.cpp">
@@ -105,8 +102,20 @@
     <ClCompile Include="SceneTitle.cpp">
       <Filter>ソース ファイル\Scene</Filter>
     </ClCompile>
-    <ClCompile Include="ObjSceneTitle.cpp">
+    <ClCompile Include="SceneManual.cpp">
       <Filter>ソース ファイル\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="ObjSceneMain.cpp">
+      <Filter>ソース ファイル\シーンオブジェクト</Filter>
+    </ClCompile>
+    <ClCompile Include="ObjSceneSelect.cpp">
+      <Filter>ソース ファイル\シーンオブジェクト</Filter>
+    </ClCompile>
+    <ClCompile Include="ObjSceneTitle.cpp">
+      <Filter>ソース ファイル\シーンオブジェクト</Filter>
+    </ClCompile>
+    <ClCompile Include="ObjSceneManual.cpp">
+      <Filter>ソース ファイル\シーンオブジェクト</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -167,13 +176,7 @@
     <ClInclude Include="Attack.h">
       <Filter>ソース ファイル\Battle\Attack</Filter>
     </ClInclude>
-    <ClInclude Include="ObjSceneMain.h">
-      <Filter>ソース ファイル\Scene</Filter>
-    </ClInclude>
     <ClInclude Include="SceneSelect.h">
-      <Filter>ソース ファイル\Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="ObjSceneSelect.h">
       <Filter>ソース ファイル\Scene</Filter>
     </ClInclude>
     <ClInclude Include="ObjBreak.h">
@@ -185,8 +188,20 @@
     <ClInclude Include="SceneTitle.h">
       <Filter>ソース ファイル\Scene</Filter>
     </ClInclude>
-    <ClInclude Include="ObjSceneTitle.h">
+    <ClInclude Include="SceneManual.h">
       <Filter>ソース ファイル\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjSceneMain.h">
+      <Filter>ソース ファイル\シーンオブジェクト</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjSceneSelect.h">
+      <Filter>ソース ファイル\シーンオブジェクト</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjSceneTitle.h">
+      <Filter>ソース ファイル\シーンオブジェクト</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjSceneManual.h">
+      <Filter>ソース ファイル\シーンオブジェクト</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

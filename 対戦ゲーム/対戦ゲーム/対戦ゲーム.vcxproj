@@ -144,9 +144,11 @@
     <ClCompile Include="ObjBreak.cpp" />
     <ClCompile Include="ObjMain.cpp" />
     <ClCompile Include="ObjSceneMain.cpp" />
+    <ClCompile Include="ObjSceneManual.cpp" />
     <ClCompile Include="ObjSceneSelect.cpp" />
     <ClCompile Include="ObjSceneTitle.cpp" />
     <ClCompile Include="SceneMain.cpp" />
+    <ClCompile Include="SceneManual.cpp" />
     <ClCompile Include="SceneSelect.cpp" />
     <ClCompile Include="SceneTitle.cpp" />
   </ItemGroup>
@@ -172,9 +174,11 @@
     <ClInclude Include="ObjBreak.h" />
     <ClInclude Include="ObjMain.h" />
     <ClInclude Include="ObjSceneMain.h" />
+    <ClInclude Include="ObjSceneManual.h" />
     <ClInclude Include="ObjSceneSelect.h" />
     <ClInclude Include="ObjSceneTitle.h" />
     <ClInclude Include="SceneMain.h" />
+    <ClInclude Include="SceneManual.h" />
     <ClInclude Include="SceneSelect.h" />
     <ClInclude Include="SceneTitle.h" />
   </ItemGroup>

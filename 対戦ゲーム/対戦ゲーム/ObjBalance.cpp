@@ -66,313 +66,366 @@ void CObjBalance::Action()
 {
 	CHitBox* hit = Hits::GetHitBox(this);
 	CObjSceneMain* m = (CObjSceneMain*)Objs::GetObj(OBJ_SCENE_MAIN);
-	if (m_p_con == 1)
-		con_num = Input::UpdateXControlerConnected();
-	if (m_p_con == 2)
-		con_num = Input::UpdateXControlerConnected() - 1;
-	//ガードしていないとき
-	if (gurd_flag == false)
+
+	if (m->GetBattle() == true)
 	{
-		//弾丸発射処理
-		if (Input::GetConButtons(con_num, GAMEPAD_X) == true)
+		if (m_p_con == 1)
+			con_num = Input::UpdateXControlerConnected();
+		if (m_p_con == 2)
+			con_num = Input::UpdateXControlerConnected() - 1;
+		//ガードしていないとき
+		if (gurd_flag == false)
 		{
-			if (bullet_flag == true && breaktime == 0 && main_R > 0&&boost_flag == false)
+			//弾丸発射処理
+			if (Input::GetConButtons(con_num, GAMEPAD_X) == true)
 			{
-				CObjNormalBullet* nb = new CObjNormalBullet(m_px + 16.0f, m_py + 16.0f, turn_flag, 0.0f, 2, false, enemy_num, 0);
-				Objs::InsertObj(nb, OBJ_NORMAL_BULLET, 1);
-				Audio::Start(2);
-				bullet_flag = false;
-				main_R--;
-			}
-			/*if (bullet_flag == true && breaktime == 0 && boost_flag == true)
-			{
-				for (int i = 0; i < 2; i++)
+				if (bullet_flag == true && breaktime == 0 && main_R > 0 && boost_flag == false)
 				{
-					CObjNormalBullet* nb = new CObjNormalBullet(m_px + 16.0f, m_py + 16.0f, turn_flag, 0.0f, 2, true, enemy_num, i);
+					CObjNormalBullet* nb = new CObjNormalBullet(m_px + 16.0f, m_py + 16.0f, turn_flag, 0.0f, 2, false, enemy_num, 0);
 					Objs::InsertObj(nb, OBJ_NORMAL_BULLET, 1);
-					
+					Audio::Start(2);
+					bullet_flag = false;
+					main_R--;
 				}
-				Audio::Start(2);
-				bullet_flag = false;
-			}*/
-		}
-		else
-			bullet_flag = true;
-
-		if (Input::GetConButtons(con_num, GAMEPAD_RIGHT_SHOULDER) == true && boost_flag == false && breaktime == 0 && sub_R > 0&&m_jump_num<500)
-		{
-			if (Audio_time == 0)
-			{
-				Audio::Start(5);
-				Audio_time++;
-			}
-				
-			
-			m_vy = -9.0f;
-			boost_flag = true;
-			sub_R--;
-		}
-		if (boost_flag == true)
-		{
-			bullet_time++;
-			if (bullet_time >= 10)
-			{
-				for (int i = 0; i < 2; i++)
+				/*if (bullet_flag == true && breaktime == 0 && boost_flag == true)
 				{
-					CObjNormalBullet* nb = new CObjNormalBullet(m_px + 16.0f, m_py + 16.0f, turn_flag, 0.0f, 2, true, enemy_num, i);
-					Objs::InsertObj(nb, OBJ_NORMAL_BULLET, 1);
-				}
-				bullet_time = 0;
-			}
-		}
-		else
-		{
-			bullet_time = 0;
-		}
+					for (int i = 0; i < 2; i++)
+					{
+						CObjNormalBullet* nb = new CObjNormalBullet(m_px + 16.0f, m_py + 16.0f, turn_flag, 0.0f, 2, true, enemy_num, i);
+						Objs::InsertObj(nb, OBJ_NORMAL_BULLET, 1);
 
-		if (breaktime == 0)
-		{
-			//左右移動処理
-			m_vx += Input::GetConVecStickLX(con_num);
+					}
+					Audio::Start(2);
+					bullet_flag = false;
+				}*/
+			}
+			else
+				bullet_flag = true;
+
+			if (Input::GetConButtons(con_num, GAMEPAD_RIGHT_SHOULDER) == true && boost_flag == false && breaktime == 0 && sub_R > 0 && m_jump_num < 500)
+			{
+				if (Audio_time == 0)
+				{
+					Audio::Start(5);
+					Audio_time++;
+				}
+
+
+				m_vy = -9.0f;
+				boost_flag = true;
+				sub_R--;
+			}
 			if (boost_flag == true)
 			{
-				//上下移動処理
-				m_vy -= Input::GetConVecStickLY(con_num);
-			}
-			
-		}
-		if (breaktime == 0) 
-		{
-			if (boost_flag == false)
-			{
-				//移動速度制御
-				if (m_vx > 5.0f)
+				bullet_time++;
+				if (bullet_time >= 10)
 				{
-					m_vx = 5.0f;
+					for (int i = 0; i < 2; i++)
+					{
+						CObjNormalBullet* nb = new CObjNormalBullet(m_px + 16.0f, m_py + 16.0f, turn_flag, 0.0f, 2, true, enemy_num, i);
+						Objs::InsertObj(nb, OBJ_NORMAL_BULLET, 1);
+					}
+					bullet_time = 0;
 				}
-				if (m_vx < -5.0f)
-				{
-					m_vx = -5.0f;
-				}
-			}
-			else if (boost_flag == true)
-			{
-				//移動速度制御
-				if (m_vx > 8.0f)
-				{
-					m_vx = 8.0f;
-				}
-				if (m_vx < -8.0f)
-				{
-					m_vx = -8.0f;
-				}
-				//移動速度制御
-				if (m_vy > 8.0f)
-				{
-					m_vy = 8.0f;
-				}
-				if (m_vy < -8.0f)
-				{
-					m_vy = -8.0f;
-				}
-			}
-			
-		}
-
-		//ジャンプ処理
-		if (Input::GetConButtons(con_num, GAMEPAD_A) == true && breaktime == 0)
-		{
-			Audio_time = 0;
-			boost_flag = false;
-
-			Audio::Stop(5);
-			/*if (m_hit_down == true)
-				m_vy = -12.0f;*/
-			m_hit_down = false;
-			if (m_hit_down == false && m_jump_num < 500)
-			{
-				if (boost_flag == false)
-					m_vy = -9.0f;
-				bust_draw_flag = true;
-				m_jump_num += 10;
 			}
 			else
 			{
+				bullet_time = 0;
+			}
+
+			if (breaktime == 0)
+			{
+				//左右移動処理
+				m_vx += Input::GetConVecStickLX(con_num);
+				if (boost_flag == true)
+				{
+					//上下移動処理
+					m_vy -= Input::GetConVecStickLY(con_num);
+				}
+
+			}
+			if (breaktime == 0)
+			{
+				if (boost_flag == false)
+				{
+					//移動速度制御
+					if (m_vx > 5.0f)
+					{
+						m_vx = 5.0f;
+					}
+					if (m_vx < -5.0f)
+					{
+						m_vx = -5.0f;
+					}
+				}
+				else if (boost_flag == true)
+				{
+					//移動速度制御
+					if (m_vx > 8.0f)
+					{
+						m_vx = 8.0f;
+					}
+					if (m_vx < -8.0f)
+					{
+						m_vx = -8.0f;
+					}
+					//移動速度制御
+					if (m_vy > 8.0f)
+					{
+						m_vy = 8.0f;
+					}
+					if (m_vy < -8.0f)
+					{
+						m_vy = -8.0f;
+					}
+				}
+
+			}
+
+			//ジャンプ処理
+			if (Input::GetConButtons(con_num, GAMEPAD_A) == true && breaktime == 0)
+			{
+				Audio_time = 0;
+				boost_flag = false;
+
+				Audio::Stop(5);
+				/*if (m_hit_down == true)
+					m_vy = -12.0f;*/
+				m_hit_down = false;
+				if (m_hit_down == false && m_jump_num < 500)
+				{
+					if (boost_flag == false)
+						m_vy = -9.0f;
+					bust_draw_flag = true;
+					m_jump_num += 10;
+				}
+				else
+				{
+					bust_draw_flag = false;
+				}
+				button_flag = false;
+			}
+			else
+			{
+				button_flag = true;
 				bust_draw_flag = false;
 			}
-			button_flag = false;
-		}
-		else
-		{
-			button_flag = true;
-			bust_draw_flag = false;
-		}
-			
 
-		//摩擦
-		if (Input::GetConVecStickLX(con_num) == 0.0f && breaktime == 0)
-		{
-			m_vx *= 0.78;
+
+			//摩擦
+			if (Input::GetConVecStickLX(con_num) == 0.0f && breaktime == 0)
+			{
+				m_vx *= 0.78;
+			}
+			//摩擦
+			if (Input::GetConVecStickLY(con_num) == 0.0f && breaktime == 0 && boost_flag == true)
+			{
+				m_vy *= 0.78;
+			}
+			//落下処理
+			if (m_py + 32.0f < 536.0f)
+			{
+				if (gurd_flag == false && boost_flag == false)
+					m_vy += 6.8 / (16.0f);
+
+			}
+
+			if (boost_flag == true)
+			{
+				if (m_jump_num < 500)
+					m_jump_num += 2;
+			}
+
 		}
-		//摩擦
-		if (Input::GetConVecStickLY(con_num) == 0.0f && breaktime == 0 && boost_flag == true)
+		//防御中は移動を制限する
+		if (gurd_flag == true && breaktime == 0)
 		{
-			m_vy *= 0.78;
+			m_vx = 0.0f;
+			m_vy = 0.0f;
 		}
+		if (m_jump_num >= 500)
+		{
+			Audio_time = 0;
+			Audio::Stop(5);
+			m_vx = 0.0f;
+			boost_flag = false;
+		}
+
+
+
+
+		//左右の向きのフラグ
+		if (m_vx > 0.0f)
+			turn_flag = false;
+		if (m_vx < 0.0f)
+			turn_flag = true;
+
+		//位置の更新
+		m_px += m_vx;
+		m_py += m_vy;
+
+		//画面外領域処理---------------------
+		if (m_py + 32.0f >= 536.0f)
+		{
+			m_hit_down = true;
+			m_py = 536.0f - 32.0f;
+			Audio_time = 0;
+			Audio::Stop(5);
+			boost_flag = false;
+			if (gurd_flag == false && breaktime == 20)
+			{
+
+				m_jump_num = 0;
+				breaktime = 0;
+			}
+			else if (m_jump_num < 500 && gurd_flag == false)
+			{
+				m_jump_num = 0;
+			}
+		}
+		if (m_py < 64.0f)
+		{
+			m_py = 64.0f;
+		}
+		if (m_px < 30.0f)
+		{
+			m_px = 30.0f;
+		}
+		if (m_px + 32.0f > 770.0f)
+		{
+			m_px = 770.0f - 32.0f;
+		}
+		//--------------------------------------
+
+
+		//ガードをしていないとき
+		/*if (Input::GetConButtons(con_num, GAMEPAD_LEFT_SHOULDER) == false)
+		{
+			gurd_flag = false;
+			if (hit->CheckObjNameHit(OBJ_FAST_BULLET) != nullptr&&boost_flag == false)
+			{
+				hp -= 1;
+			}
+		}*/
+
+		if (Input::GetConButtons(con_num, GAMEPAD_LEFT_SHOULDER) == false)
+		{
+			gurd_flag = false;
+			gurd_time = false;
+		}
+		//ガードをしているとき
+		if (Input::GetConButtons(con_num, GAMEPAD_LEFT_SHOULDER) == true)
+		{
+			if (m_jump_num < 500)
+			{
+				gurd_flag = true;
+				m_jump_num += 10;
+				if (gurd_time == false)
+				{
+					if (hp > 0)
+					{
+						CObjAttack* a = new CObjAttack(m_px, m_py, turn_flag, 0.0f, 1, 2);
+						Objs::InsertObj(a, OBJ_ATTACK, 1);
+						//gurd_time = true;
+					}
+
+				}
+
+			}
+		}
+		/*if (hit->CheckObjNameHit(OBJ_FAST_BULLET) != nullptr)
+		{
+			hp -= 1;
+		}*/
+		//ブースト残量がないためガードをできない
+		if (m_jump_num >= 500)
+		{
+			gurd_flag = false;
+			if (breaktime < 20 && m_hit_down == true)
+				breaktime++;
+			gurd_time = false;
+		}
+		//HPが0になった時
+		if (hp <= 0)
+		{
+			if (m_p_con == 1)
+				m->GetVictory(2);
+			if (m_p_con == 2)
+				m->GetVictory(1);
+			this->SetStatus(false);
+			Hits::DeleteHitBox(this);
+			//Scene::SetScene(new SceneMain());
+		}
+
+		hit->SetPos(m_px, m_py);
+
+		if (sub_R == 0)
+		{
+			sub_R_time++;
+		}
+		if (sub_R_time == 400)
+		{
+			sub_R = 3;
+			sub_R_time = 0;
+		}
+		if (main_R == 0)
+		{
+			main_R_time++;
+		}
+		if (main_R_time == 100)
+		{
+			main_R = 10;
+			main_R_time = 0;
+		}
+	}
+
+	if (m->GetBattle() == false)
+	{
+		//位置の更新
+		m_px += m_vx;
+		m_py += m_vy;
+
+		hit->SetPos(m_px, m_py);
+
 		//落下処理
 		if (m_py + 32.0f < 536.0f)
 		{
 			if (gurd_flag == false && boost_flag == false)
 				m_vy += 6.8 / (16.0f);
-
 		}
-
-		if (boost_flag == true)
+		if (m_py + 32.0f >= 536.0f)
 		{
-			if (m_jump_num < 500)
-				m_jump_num += 2;
-		}
-	
-	}
-	//防御中は移動を制限する
-	if (gurd_flag == true && breaktime == 0)
-	{
-		m_vx = 0.0f;
-		m_vy = 0.0f;
-	}
-	if (m_jump_num >= 500)
-	{
-		Audio_time = 0;
-		Audio::Stop(5);
-		m_vx = 0.0f;
-		boost_flag = false;
-	}
-	
-	
-
-	
-	//左右の向きのフラグ
-	if (m_vx > 0.0f)
-		turn_flag = false;
-	if (m_vx < 0.0f)
-		turn_flag = true;
-
-	//位置の更新
-	m_px += m_vx;
-	m_py += m_vy;
-	
-	//画面外領域処理---------------------
-	if (m_py + 32.0f >= 536.0f)
-	{
-		m_hit_down = true;
-		m_py = 536.0f - 32.0f;
-		Audio_time = 0;
-		Audio::Stop(5);
-		boost_flag = false;
-		if (gurd_flag == false && breaktime == 20)
-		{
-			
-			m_jump_num = 0;
-			breaktime = 0;
-		}
-		else if (m_jump_num < 500 && gurd_flag == false)
-		{
-			m_jump_num = 0;
-		}
-	}
-	if (m_py < 64.0f)
-	{
-		m_py = 64.0f;
-	}
-	if (m_px < 30.0f)
-	{
-		m_px = 30.0f;
-	}
-	if (m_px + 32.0f > 770.0f)
-	{
-		m_px = 770.0f - 32.0f;
-	}
-	//--------------------------------------
-
-
-	//ガードをしていないとき
-	/*if (Input::GetConButtons(con_num, GAMEPAD_LEFT_SHOULDER) == false)
-	{
-		gurd_flag = false;
-		if (hit->CheckObjNameHit(OBJ_FAST_BULLET) != nullptr&&boost_flag == false)
-		{
-			hp -= 1;
-		}
-	}*/
-
-	if (Input::GetConButtons(con_num, GAMEPAD_LEFT_SHOULDER) == false)
-	{
-		gurd_flag = false;
-		gurd_time = false;
-	}
-	//ガードをしているとき
-	if (Input::GetConButtons(con_num, GAMEPAD_LEFT_SHOULDER) == true)
-	{
-		if (m_jump_num < 500)
-		{
-			gurd_flag = true;
-			m_jump_num += 10;
-			if (gurd_time == false)
+			m_hit_down = true;
+			m_py = 536.0f - 32.0f;
+			Audio_time = 0;
+			Audio::Stop(5);
+			boost_flag = false;
+			if (gurd_flag == false && breaktime == 20)
 			{
-				if (hp > 0)
-				{
-					CObjAttack* a = new CObjAttack(m_px, m_py, turn_flag, 0.0f, 1, 2);
-					Objs::InsertObj(a, OBJ_ATTACK, 1);
-					//gurd_time = true;
-				}
-				
+
+				m_jump_num = 0;
+				breaktime = 0;
 			}
-			
+			else if (m_jump_num < 500 && gurd_flag == false)
+			{
+				m_jump_num = 0;
+			}
 		}
-	}
-	/*if (hit->CheckObjNameHit(OBJ_FAST_BULLET) != nullptr)
-	{
-		hp -= 1;
-	}*/
-	//ブースト残量がないためガードをできない
-	if (m_jump_num >= 500)
-	{
-		gurd_flag = false;
-		if (breaktime < 20 && m_hit_down == true)
-			breaktime++;
-		gurd_time = false;
-	}
-	//HPが0になった時
-	if (hp <= 0)
-	{
-		if (m_p_con == 1)
-			m->GetVictory(2);
-		if (m_p_con == 2)
-			m->GetVictory(1);
-		this->SetStatus(false);
-		Hits::DeleteHitBox(this);
-		//Scene::SetScene(new SceneMain());
-	}
+		if (m_py < 64.0f)
+		{
+			m_py = 64.0f;
+		}
+		if (m_px < 30.0f)
+		{
+			m_px = 30.0f;
+		}
+		if (m_px + 32.0f > 770.0f)
+		{
+			m_px = 770.0f - 32.0f;
+		}
 
-	hit->SetPos(m_px, m_py);
+	
 
-	if (sub_R == 0)
-	{
-		sub_R_time++;
-	}
-	if (sub_R_time == 400)
-	{
-		sub_R = 3;
-		sub_R_time = 0;
-	}
-	if (main_R == 0)
-	{
-		main_R_time++;
-	}
-	if (main_R_time == 100)
-	{
-		main_R = 10;
-		main_R_time = 0;
 	}
 }
 

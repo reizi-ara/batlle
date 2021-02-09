@@ -5,33 +5,20 @@
 using namespace GameL;
 
 //オブジェクト:タイトル
-class CObjSceneMain : public CObj
+class CObjSceneManual : public CObj
 {
 public:
-	CObjSceneMain();
-	~CObjSceneMain() {};
+	CObjSceneManual(int con_1_num, int con_2_num);
+	~CObjSceneManual() {};
 	void Init();   //イニシャライズ
 	void Action(); //アクション
 	void Draw();   //ドロー
-
-	void GetVictory(int flag) 
-	{ 
-		if (victory_flag == 0)
-			victory_flag = flag;
-	}
-
-	bool GetBattle() { return Battle_flag; }
-
 private:
-
-	int victory_flag;
-
-	int m_p1;
-	int m_p2;
 	int con1_num;
 	int con2_num;
 
-	bool Battle_flag;
-
 	int m_time;
+
+	int m_p1_num;
+	int m_p2_num;
 };

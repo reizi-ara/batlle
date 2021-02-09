@@ -55,37 +55,37 @@ void SceneMain::InitScene()
 
 	if (m_p1_con == 1)
 	{
-		CObjMain* m = new CObjMain(30.0f, 1.0f, 1, m_p2_con);
+		CObjMain* m = new CObjMain(30.0f, 70.0f, 1, m_p2_con);
 		Objs::InsertObj(m, OBJ_MAIN, 5);
 	}
 	if (m_p2_con == 1)
 	{
-		CObjMain* m = new CObjMain(738.0f, 1.0f, 2, m_p1_con);
+		CObjMain* m = new CObjMain(738.0f, 70.0f, 2, m_p1_con);
 		Objs::InsertObj(m, OBJ_MAIN, 5);
 	}
 
 	if (m_p1_con == 2)
 	{
-		CObjBalance* b = new CObjBalance(30.0f, 1.0f, 1, m_p2_con);
+		CObjBalance* b = new CObjBalance(30.0f, 70.0f, 1, m_p2_con);
 		Objs::InsertObj(b, OBJ_BALANCE, 5);
 		
 	}
 	if (m_p2_con == 2)
 	{
-		CObjBalance* b = new CObjBalance(738.0f, 1.0f, 2, m_p1_con);
+		CObjBalance* b = new CObjBalance(738.0f, 70.0f, 2, m_p1_con);
 		Objs::InsertObj(b, OBJ_BALANCE, 5);
 		
 	}
 	if (m_p1_con == 3)
 	{
 		
-		CObjBreak* bb = new CObjBreak(30.0f, 1.0f, 1, m_p2_con);
+		CObjBreak* bb = new CObjBreak(30.0f, 70.0f, 1, m_p2_con);
 		Objs::InsertObj(bb, OBJ_BREAK, 5);
 	}
 	if (m_p2_con == 3)
 	{
 		
-		CObjBreak* bb = new CObjBreak(738.0f, 1.0f, 2, m_p1_con);
+		CObjBreak* bb = new CObjBreak(738.0f, 70.0f, 2, m_p1_con);
 		Objs::InsertObj(bb, OBJ_BREAK, 5);
 	}
 
